@@ -1,0 +1,356 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>favicon-16
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Unarine Dzivhani | Full-Stack Developer</title>
+  <meta name="description" content="Full-Stack Developer & Computer Science graduate skilled in Flutter, Firebase, Python, and AI/ML. Based in South Africa." />
+
+  <!-- Open Graph -->
+  <meta property="og:title" content="Unarine Dzivhani | Full-Stack Developer" />
+  <meta property="og:description" content="Full-Stack Developer & Computer Science graduate skilled in Flutter, Firebase, Python, and AI/ML." />
+  <meta property="og:image" content="assets/images/og-image.png" />
+  <meta property="og:url" content="https://unarined.dev" />
+  <meta property="og:type" content="website" />
+
+  <!-- Twitter Card -->
+  <meta name="twitter:card" content="summary_large_image" />
+  <meta name="twitter:title" content="Unarine Dzivhani | Full-Stack Developer" />
+  <meta name="twitter:description" content="Full-Stack Developer & Computer Science graduate." />
+  <meta name="twitter:image" content="assets/images/og-image.png" />
+
+  <!-- Canonical -->
+  <link rel="canonical" href="https://unarined.dev" />
+
+  <!-- Favicons -->
+  <link rel="icon" type="image/png" sizes="32x32" href="assets/icons/favicon-32.png" />
+  <link rel="icon" type="image/png" sizes="16x16" href="assets/icons/favicon-16.png" />
+  <link rel="apple-touch-icon" href="assets/icons/favicon-180.png" />
+
+  <!-- Google Fonts -->
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@300;400;500;600;700&family=IBM+Plex+Mono:wght@300;400;500&display=swap" rel="stylesheet" />
+
+  <!-- Font Awesome -->
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css" defer />
+
+  <!-- Devicons -->
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/devicons/devicon@latest/devicon.min.css" />
+
+  <!-- Stylesheets -->
+  <link rel="stylesheet" href="css/main.css" />
+  <link rel="stylesheet" href="css/nav.css" />
+  <link rel="stylesheet" href="css/hero.css" />
+  <link rel="stylesheet" href="css/projects.css" />
+  <link rel="stylesheet" href="css/animations.css" />
+  <link rel="stylesheet" href="css/responsive.css" />
+
+  <!-- JSON-LD Structured Data -->
+  <script type="application/ld+json">
+  {
+    "@context": "https://schema.org",
+    "@type": "Person",
+    "name": "Unarine Dzivhani",
+    "jobTitle": "Full-Stack Developer",
+    "email": "unarined3@gmail.com",
+    "url": "https://unarined.dev",
+    "sameAs": [
+      "https://github.com/23019520",
+      "https://www.linkedin.com/in/unarine-dzivhani-programmer"
+    ],
+    "alumniOf": {
+      "@type": "CollegeOrUniversity",
+      "name": "University of Venda"
+    }
+  }
+  </script>
+</head>
+<body class="dark-mode" data-theme="dark">
+
+  <!-- Custom Cursor -->
+  <div class="cursor-dot" id="cursorDot"></div>
+  <div class="cursor-ring" id="cursorRing"></div>
+
+  <!-- ═══════════════════════════════════════ NAVIGATION -->
+  <header id="navbar" class="navbar">
+    <nav class="nav-inner">
+      <a href="#hero" class="nav-logo">UD<span class="accent">.</span></a>
+      <ul class="nav-links" id="navLinks">
+        <li><a href="#about" class="nav-link">01 About</a></li>
+        <li><a href="#projects" class="nav-link">02 Projects</a></li>
+        <li><a href="#skills" class="nav-link">03 Skills</a></li>
+        <li><a href="#experience" class="nav-link">04 Experience</a></li>
+        <li><a href="#contact" class="nav-link">05 Contact</a></li>
+      </ul>
+      <div class="nav-actions">
+        <button class="theme-toggle" id="themeToggle" aria-label="Toggle theme">
+          <i class="fa-solid fa-moon" id="themeIcon"></i>
+        </button>
+        <button class="hamburger" id="hamburger" aria-label="Open menu">
+          <span></span><span></span><span></span>
+        </button>
+      </div>
+    </nav>
+    <!-- Mobile Overlay Menu -->
+    <div class="mobile-menu" id="mobileMenu">
+      <ul class="mobile-links">
+        <li><a href="#about" class="mobile-link">01 About</a></li>
+        <li><a href="#projects" class="mobile-link">02 Projects</a></li>
+        <li><a href="#skills" class="mobile-link">03 Skills</a></li>
+        <li><a href="#experience" class="mobile-link">04 Experience</a></li>
+        <li><a href="#contact" class="mobile-link">05 Contact</a></li>
+      </ul>
+    </div>
+  </header>
+
+  <main>
+
+    <!-- ═══════════════════════════════════════ HERO -->
+    <section id="hero" class="hero-section">
+      <canvas id="heroCanvas"></canvas>
+      <div class="hero-content">
+        <p class="hero-eyebrow gsap-hero-eyebrow">Based in South Africa</p>
+        <h1 class="hero-name gsap-hero-name">Unarine<br /><span class="accent">Dzivhani</span></h1>
+        <p class="hero-subtitle gsap-hero-subtitle">
+          I'm a <span id="typedText"></span>
+        </p>
+        <div class="hero-ctas gsap-hero-ctas">
+          <a href="#projects" class="btn btn-primary">View My Work</a>
+          <a href="assets/cv/Unarine_Dzivhani_CV.pdf" class="btn btn-outline" target="_blank" rel="noopener">
+            <i class="fa-solid fa-download"></i> Download CV
+          </a>
+        </div>
+      </div>
+      <div class="scroll-indicator">
+        <span>scroll</span>
+        <div class="scroll-line"></div>
+      </div>
+    </section>
+
+    <!-- ═══════════════════════════════════════ ABOUT -->
+    <section id="about" class="section about-section">
+      <div class="container">
+        <div class="section-label gsap-section-label">
+          <span class="section-number">01</span>
+          <span class="section-title">About</span>
+        </div>
+        <div class="about-grid">
+          <div class="about-text gsap-about-text">
+            <h2 class="about-heading">Detail-Oriented Builder.<br />Perpetual Learner.</h2>
+            <p>Computer Science graduate from the University of Venda with a relentless drive for clean code and thoughtful UX. I turn requirements into real products — from cross-platform mobile apps to ML pipelines to game mechanics.</p>
+            <p>I believe great software lives at the intersection of engineering precision and creative ambition. Whether I'm training a vision model, wiring up real-time Firebase streams, or tutoring the next generation of developers, I bring the same attention to detail.</p>
+            <div class="about-stats">
+              <div class="stat-item">
+                <span class="stat-number">4+</span>
+                <span class="stat-label">Projects Shipped</span>
+              </div>
+              <div class="stat-item">
+                <span class="stat-number">2+</span>
+                <span class="stat-label">Years Coding</span>
+              </div>
+              <div class="stat-item">
+                <span class="stat-number">∞</span>
+                <span class="stat-label">Cups of Coffee</span>
+              </div>
+            </div>
+          </div>
+          <div class="about-photo gsap-about-photo">
+            <div class="photo-frame">
+              <picture>
+                <source srcset="assets/images/profile.webp" type="image/webp" />
+                <img src="assets/images/profile.jpeg" alt="Unarine Dzivhani" loading="lazy" />
+              </picture>
+              <div class="photo-decoration"></div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ═══════════════════════════════════════ PROJECTS -->
+    <section id="projects" class="section projects-section">
+      <div class="container">
+        <div class="section-label gsap-section-label">
+          <span class="section-number">02</span>
+          <span class="section-title">Projects</span>
+        </div>
+        <h2 class="section-heading">Things I've Built</h2>
+        <div class="project-filters">
+          <button class="filter-btn active" data-filter="all">All</button>
+          <button class="filter-btn" data-filter="mobile">Mobile</button>
+          <button class="filter-btn" data-filter="ml">ML / AI</button>
+          <button class="filter-btn" data-filter="game">Game Dev</button>
+        </div>
+        <div class="projects-grid" id="projectsGrid">
+          <!-- Populated by js/projects.js (GitHub API + fallback) -->
+        </div>
+      </div>
+    </section>
+
+    <!-- ═══════════════════════════════════════ SKILLS -->
+    <section id="skills" class="section skills-section">
+      <div class="container">
+        <div class="section-label gsap-section-label">
+          <span class="section-number">03</span>
+          <span class="section-title">Skills</span>
+        </div>
+        <h2 class="section-heading">Tech Stack</h2>
+        <p class="skills-philosophy">I pick the right tool for the job. My stack leans mobile-first, but I'm equally comfortable at the ML layer or deep in game engine internals.</p>
+
+        <div class="skills-groups">
+          <div class="skill-group gsap-skill-group">
+            <h3 class="skill-group-title">Mobile & Web</h3>
+            <div class="skill-icons">
+              <div class="skill-icon-item"><img src="https://cdn.jsdelivr.net/gh/devicons/devicon@latest/icons/flutter/flutter-original.svg" alt="Flutter" /><span>Flutter</span></div>
+              <div class="skill-icon-item"><img src="https://cdn.jsdelivr.net/gh/devicons/devicon@latest/icons/firebase/firebase-plain.svg" alt="Firebase" /><span>Firebase</span></div>
+              <div class="skill-icon-item"><img src="https://cdn.jsdelivr.net/gh/devicons/devicon@latest/icons/dart/dart-original.svg" alt="Dart" /><span>Dart</span></div>
+              <div class="skill-icon-item"><img src="https://cdn.jsdelivr.net/gh/devicons/devicon@latest/icons/html5/html5-original.svg" alt="HTML5" /><span>HTML5</span></div>
+              <div class="skill-icon-item"><img src="https://cdn.jsdelivr.net/gh/devicons/devicon@latest/icons/css3/css3-original.svg" alt="CSS3" /><span>CSS3</span></div>
+              <div class="skill-icon-item"><img src="https://cdn.jsdelivr.net/gh/devicons/devicon@latest/icons/php/php-original.svg" alt="PHP" /><span>PHP</span></div>
+            </div>
+          </div>
+          <div class="skill-group gsap-skill-group">
+            <h3 class="skill-group-title">Languages</h3>
+            <div class="skill-icons">
+              <div class="skill-icon-item"><img src="https://cdn.jsdelivr.net/gh/devicons/devicon@latest/icons/python/python-original.svg" alt="Python" /><span>Python</span></div>
+              <div class="skill-icon-item"><img src="https://cdn.jsdelivr.net/gh/devicons/devicon@latest/icons/java/java-original.svg" alt="Java" /><span>Java</span></div>
+              <div class="skill-icon-item"><img src="https://cdn.jsdelivr.net/gh/devicons/devicon@latest/icons/cplusplus/cplusplus-original.svg" alt="C++" /><span>C++</span></div>
+            </div>
+          </div>
+          <div class="skill-group gsap-skill-group">
+            <h3 class="skill-group-title">ML & AI</h3>
+            <div class="skill-icons">
+              <div class="skill-icon-item"><img src="https://cdn.jsdelivr.net/gh/devicons/devicon@latest/icons/tensorflow/tensorflow-original.svg" alt="TensorFlow" /><span>TensorFlow</span></div>
+              <div class="skill-icon-item"><img src="https://cdn.jsdelivr.net/gh/devicons/devicon@latest/icons/opencv/opencv-original.svg" alt="OpenCV" /><span>OpenCV</span></div>
+              <div class="skill-icon-item"><img src="https://cdn.jsdelivr.net/gh/devicons/devicon@latest/icons/jupyter/jupyter-original.svg" alt="Jupyter" /><span>Jupyter</span></div>
+            </div>
+          </div>
+          <div class="skill-group gsap-skill-group">
+            <h3 class="skill-group-title">Tools</h3>
+            <div class="skill-icons">
+              <div class="skill-icon-item"><img src="https://cdn.jsdelivr.net/gh/devicons/devicon@latest/icons/git/git-original.svg" alt="Git" /><span>Git</span></div>
+              <div class="skill-icon-item"><img src="https://cdn.jsdelivr.net/gh/devicons/devicon@latest/icons/github/github-original.svg" alt="GitHub" /><span>GitHub</span></div>
+              <div class="skill-icon-item"><img src="https://cdn.jsdelivr.net/gh/devicons/devicon@latest/icons/vscode/vscode-original.svg" alt="VS Code" /><span>VS Code</span></div>
+              <div class="skill-icon-item"><img src="https://cdn.jsdelivr.net/gh/devicons/devicon@latest/icons/godot/godot-plain.svg" alt="Godot" /><span>Godot</span></div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ═══════════════════════════════════════ EXPERIENCE -->
+    <section id="experience" class="section experience-section">
+      <div class="container">
+        <div class="section-label gsap-section-label">
+          <span class="section-number">04</span>
+          <span class="section-title">Experience</span>
+        </div>
+        <h2 class="section-heading">Timeline</h2>
+        <div class="timeline">
+          <div class="timeline-item gsap-timeline-item">
+            <div class="timeline-dot"></div>
+            <div class="timeline-content">
+              <span class="timeline-date">2025</span>
+              <h3 class="timeline-role">Tutor — AI Fundamentals & Data Structures</h3>
+              <p class="timeline-company">University of Venda</p>
+              <ul class="timeline-bullets">
+                <li>Tutored undergraduates in Artificial Intelligence and Data Structures & Algorithms</li>
+                <li>Designed supplementary exercises improving student comprehension and pass rates</li>
+                <li>Mentored students through complex algorithm design and analysis challenges</li>
+              </ul>
+            </div>
+          </div>
+          <div class="timeline-item gsap-timeline-item">
+            <div class="timeline-dot"></div>
+            <div class="timeline-content">
+              <span class="timeline-date">2023 – 2025</span>
+              <h3 class="timeline-role">BSc Computer Science</h3>
+              <p class="timeline-company">University of Venda</p>
+              <ul class="timeline-bullets">
+                <li>Graduated with a strong foundation in software development, system analysis, and QA principles</li>
+                <li>Shipped 4 independent projects spanning mobile apps, ML models, and game development</li>
+              </ul>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ═══════════════════════════════════════ CONTACT -->
+    <section id="contact" class="section contact-section">
+      <div class="container">
+        <div class="section-label gsap-section-label">
+          <span class="section-number">05</span>
+          <span class="section-title">Contact</span>
+        </div>
+        <h2 class="section-heading contact-heading">Let's Build<br /><span class="accent">Something.</span></h2>
+        <div class="contact-grid">
+          <div class="contact-form-wrap gsap-contact-form">
+            <form id="contactForm" action="https://formspree.io/f/mdapopog" method="POST" novalidate>
+              <div class="form-group">
+                <label for="name">Name</label>
+                <input type="text" id="name" name="name" placeholder="Your name" required />
+              </div>
+              <div class="form-group">
+                <label for="email">Email</label>
+                <input type="email" id="email" name="email" placeholder="your@email.com" required />
+              </div>
+              <div class="form-group">
+                <label for="message">Message</label>
+                <textarea id="message" name="message" rows="5" placeholder="Tell me about your project..." required></textarea>
+              </div>
+              <button type="submit" class="btn btn-primary btn-full">
+                <span class="btn-text">Send Message</span>
+                <span class="btn-loader" style="display:none;"><i class="fa-solid fa-circle-notch fa-spin"></i></span>
+              </button>
+              <p class="form-success" id="formSuccess" style="display:none;">Message sent! I'll be in touch soon.</p>
+              <p class="form-error" id="formError" style="display:none;">Something went wrong. Try emailing me directly.</p>
+            </form>
+          </div>
+          <div class="contact-info">
+            <p class="contact-direct">Or reach me directly:</p>
+            <a href="mailto:unarined3@gmail.com" class="contact-email">unarined3@gmail.com</a>
+            <div class="social-links">
+              <a href="https://github.com/23019520" target="_blank" rel="noopener" aria-label="GitHub"><i class="fa-brands fa-github"></i></a>
+              <a href="https://www.linkedin.com/in/unarine-dzivhani-programmer" target="_blank" rel="noopener" aria-label="LinkedIn"><i class="fa-brands fa-linkedin-in"></i></a>
+              <a href="mailto:unarined3@gmail.com" aria-label="Email"><i class="fa-solid fa-envelope"></i></a>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+  </main>
+
+  <!-- ═══════════════════════════════════════ FOOTER -->
+  <footer class="footer">
+    <div class="container footer-inner">
+      <p class="footer-copy">© 2026 Unarine Dzivhani — Built with passion &amp; vanilla JS</p>
+      <div class="footer-github-streak" id="footerStreak"></div>
+      <a href="#hero" class="back-to-top" aria-label="Back to top"><i class="fa-solid fa-arrow-up"></i></a>
+    </div>
+  </footer>
+
+  <!-- ═══════════════════════════════════════ SCRIPTS -->
+  <!-- Three.js -->
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js" defer></script>
+  <!-- GSAP + ScrollTrigger -->
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/gsap.min.js" defer></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/ScrollTrigger.min.js" defer></script>
+  <!-- Typed.js -->
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/typed.js/2.0.16/typed.umd.js" defer></script>
+  <!-- vanilla-tilt -->
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/vanilla-tilt/1.8.1/vanilla-tilt.min.js" defer></script>
+
+  <!-- App scripts -->
+  <script src="js/cursor.js" defer></script>
+  <script src="js/theme.js" defer></script>
+  <script src="js/three-scene.js" defer></script>
+  <script src="js/typed-init.js" defer></script>
+  <script src="js/github-api.js" defer></script>
+  <script src="js/projects.js" defer></script>
+  <script src="js/gsap-animations.js" defer></script>
+  <script src="js/main.js" defer></script>
+</body>
+</html>

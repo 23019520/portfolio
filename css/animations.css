@@ -1,0 +1,86 @@
+/* ═══════════════════════════════════════════════════════
+   css/animations.css  —  Keyframes & micro-interactions
+═══════════════════════════════════════════════════════ */
+
+/* ── Initial GSAP animation states ─────────────────── */
+/* These classes mark elements that GSAP will animate.
+   The actual animation logic lives in js/gsap-animations.js */
+
+.gsap-hero-eyebrow,
+.gsap-hero-subtitle,
+.gsap-hero-ctas {
+  opacity: 0;
+}
+
+.gsap-section-label,
+.gsap-about-text,
+.gsap-about-photo,
+.gsap-skill-group,
+.gsap-timeline-item,
+.gsap-contact-form {
+  opacity: 0;
+  transform: translateY(40px);
+}
+
+/* ── Timeline draw line ─────────────────────────────── */
+@keyframes drawLine {
+  from { transform: scaleY(0); }
+  to   { transform: scaleY(1); }
+}
+
+/* ── Glitch effect on hero name (subtle) ────────────── */
+@keyframes glitch {
+  0%   { clip-path: inset(80% 0 0 0); transform: translate(2px); }
+  20%  { clip-path: inset(20% 0 60% 0); transform: translate(-2px); }
+  40%  { clip-path: inset(50% 0 30% 0); transform: translate(1px); }
+  60%  { clip-path: inset(10% 0 80% 0); transform: translate(-1px); }
+  80%  { clip-path: inset(60% 0 10% 0); transform: translate(2px); }
+  100% { clip-path: inset(0% 0 100% 0); transform: translate(0); }
+}
+
+/* ── Page load fade-in ──────────────────────────────── */
+@keyframes fadeUp {
+  from { opacity: 0; transform: translateY(20px); }
+  to   { opacity: 1; transform: translateY(0); }
+}
+
+/* ── Pulse glow on accent elements ─────────────────── */
+@keyframes accentGlow {
+  0%, 100% { text-shadow: 0 0 8px rgba(233,69,96,0.4); }
+  50%       { text-shadow: 0 0 20px rgba(233,69,96,0.8); }
+}
+
+/* ── CTA button hover sweep ─────────────────────────── */
+.btn-primary::after {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background: rgba(255,255,255,0.15);
+  transform: translateX(-101%);
+  transition: transform 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+}
+.btn-primary:hover::after { transform: translateX(0); }
+
+/* ── Prefers reduced motion ─────────────────────────── */
+@media (prefers-reduced-motion: reduce) {
+  *, *::before, *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+  }
+
+  .gsap-hero-eyebrow,
+  .gsap-hero-subtitle,
+  .gsap-hero-ctas,
+  .gsap-section-label,
+  .gsap-about-text,
+  .gsap-about-photo,
+  .gsap-skill-group,
+  .gsap-timeline-item,
+  .gsap-contact-form {
+    opacity: 1 !important;
+    transform: none !important;
+  }
+
+  #heroCanvas { display: none; }
+}
