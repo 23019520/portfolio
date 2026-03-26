@@ -155,6 +155,50 @@
   display: none;
 }
 
+/* Collapsed extra cards */
+.project-card.project-collapsed {
+  display: none;
+}
+
+.project-card.project-expanded {
+  display: flex;
+  animation: fadeUp 0.4s ease forwards;
+}
+
+/* More button */
+.projects-more-wrap {
+  display: flex;
+  justify-content: center;
+  margin-top: 2rem;
+}
+
+.projects-more-btn {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.6rem;
+  font-family: var(--font-mono);
+  font-size: 0.72rem;
+  letter-spacing: 0.15em;
+  text-transform: uppercase;
+  color: var(--text-muted);
+  padding: 0.55rem 1.4rem;
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+  cursor: none;
+  transition: color var(--transition), border-color var(--transition);
+  background: none;
+}
+
+.projects-more-btn:hover {
+  color: var(--accent);
+  border-color: var(--accent);
+}
+
+.more-btn-icon {
+  font-size: 0.65rem;
+  transition: transform 0.3s ease;
+}
+
 /* Loading skeleton */
 .skeleton-card {
   background: var(--bg-card);

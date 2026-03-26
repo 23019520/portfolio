@@ -19,7 +19,57 @@
 }
 
 [data-theme="light"] .navbar.scrolled {
-  background: rgba(245, 245, 248, 0.85);
+  background: rgba(245, 245, 248, 0.88);
+  overflow: hidden;
+}
+
+/* Animated red accent lines in light mode header */
+[data-theme="light"] .navbar.scrolled::before,
+[data-theme="light"] .navbar.scrolled::after {
+  content: '';
+  position: absolute;
+  pointer-events: none;
+}
+
+/* Sweeping underline bar */
+[data-theme="light"] .navbar.scrolled::before {
+  bottom: 0; left: 0;
+  height: 2px;
+  width: 100%;
+  background: linear-gradient(
+    90deg,
+    transparent 0%,
+    var(--accent) 30%,
+    var(--accent-cyan) 60%,
+    transparent 100%
+  );
+  background-size: 200% 100%;
+  animation: navLineSweep 3s ease-in-out infinite;
+}
+
+/* Glowing orb that drifts across */
+[data-theme="light"] .navbar.scrolled::after {
+  top: 50%;
+  left: -80px;
+  transform: translateY(-50%);
+  width: 80px;
+  height: 80px;
+  border-radius: 50%;
+  background: radial-gradient(circle, rgba(233,69,96,0.18) 0%, transparent 70%);
+  animation: navOrbDrift 5s ease-in-out infinite;
+}
+
+@keyframes navLineSweep {
+  0%   { background-position: 100% 0; opacity: 0.5; }
+  50%  { background-position:  0% 0; opacity: 1; }
+  100% { background-position: 100% 0; opacity: 0.5; }
+}
+
+@keyframes navOrbDrift {
+  0%   { left: -80px;  opacity: 0; }
+  20%  { opacity: 1; }
+  80%  { opacity: 0.8; }
+  100% { left: calc(100% + 80px); opacity: 0; }
 }
 
 .nav-inner {

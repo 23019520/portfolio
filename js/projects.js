@@ -114,6 +114,9 @@
   }
 
   // ── Render helpers ────────────────────────────────────
+  const INITIAL_VISIBLE = 4;
+  let allProjects = [];
+
   function renderSkeletons(n) {
     grid.innerHTML = Array.from({ length: n }, () =>
       `<div class="skeleton-card"></div>`
@@ -124,14 +127,61 @@
     grid.innerHTML = '';
 
     // Featured first
-    const sorted = [...projects].sort((a, b) => (b.featured ? 1 : 0) - (a.featured ? 1 : 0));
+    allProjects = [...projects].sort((a, b) => (b.featured ? 1 : 0) - (a.featured ? 1 : 0));
 
-    sorted.forEach(p => {
-      grid.insertAdjacentHTML('beforeend', cardHTML(p));
+    allProjects.forEach((p, i) => {
+      const html = cardHTML(p, i);
+      grid.insertAdjacentHTML('beforeend', html);
+    });
+
+    // Hide cards beyond the initial limit
+    const cards = grid.querySelectorAll('.project-card');
+    cards.forEach((card, i) => {
+      if (i >= INITIAL_VISIBLE) card.classList.add('project-collapsed');
+    });
+
+    // Render the "more" button if needed
+    renderMoreButton(cards.length);
+  }
+
+  function renderMoreButton(total) {
+    const existing = document.getElementById('projectsMoreBtn');
+    if (existing) existing.remove();
+
+    if (total <= INITIAL_VISIBLE) return;
+
+    const remaining = total - INITIAL_VISIBLE;
+    const wrap = document.createElement('div');
+    wrap.className = 'projects-more-wrap';
+    wrap.innerHTML = `
+      <button class="projects-more-btn" id="projectsMoreBtn">
+        <span class="more-btn-text">+${remaining} more projects</span>
+        <i class="fa-solid fa-chevron-down more-btn-icon"></i>
+      </button>`;
+    grid.insertAdjacentElement('afterend', wrap);
+
+    let expanded = false;
+    wrap.querySelector('#projectsMoreBtn').addEventListener('click', () => {
+      expanded = !expanded;
+      const cards = grid.querySelectorAll('.project-card.project-collapsed, .project-card.project-expanded');
+      const btn   = document.getElementById('projectsMoreBtn');
+
+      cards.forEach(card => {
+        card.classList.toggle('project-collapsed', !expanded);
+        card.classList.toggle('project-expanded',   expanded);
+      });
+
+      btn.querySelector('.more-btn-text').textContent = expanded
+        ? 'Show less'
+        : `+${remaining} more projects`;
+      btn.querySelector('.more-btn-icon').style.transform = expanded
+        ? 'rotate(180deg)' : 'rotate(0deg)';
+
+      if (typeof ScrollTrigger !== 'undefined') ScrollTrigger.refresh();
     });
   }
 
-  function cardHTML(p) {
+  function cardHTML(p, _i) {
     const tagsHTML  = p.tags.map(t => `<span class="project-tag">${t}</span>`).join('');
     const statsHTML = (p.stars !== undefined)
       ? `<div class="project-stats">
@@ -174,11 +224,35 @@
         btn.classList.add('active');
 
         const f = btn.dataset.filter;
-        document.querySelectorAll('.project-card').forEach(card => {
-          const cat = card.dataset.category;
+        const cards = [...grid.querySelectorAll('.project-card')];
+
+        // First pass: show/hide by category
+        let visibleCount = 0;
+        cards.forEach(card => {
+          const cat  = card.dataset.category;
           const show = f === 'all' || cat === f || cat === 'all';
           card.classList.toggle('hidden', !show);
+          if (show) visibleCount++;
         });
+
+        // Second pass: re-apply collapse on visible cards
+        let shown = 0;
+        cards.forEach(card => {
+          if (!card.classList.contains('hidden')) {
+            shown++;
+            card.classList.remove('project-expanded');
+            if (shown > INITIAL_VISIBLE) {
+              card.classList.add('project-collapsed');
+            } else {
+              card.classList.remove('project-collapsed');
+            }
+          }
+        });
+
+        // Re-render more button
+        const moreWrap = document.querySelector('.projects-more-wrap');
+        if (moreWrap) moreWrap.remove();
+        renderMoreButton(visibleCount);
       });
     });
   }
