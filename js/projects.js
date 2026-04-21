@@ -34,7 +34,7 @@
       subtitle: 'Computer vision pipeline with OpenCV & TensorFlow',
       tags: ['Python', 'TensorFlow', 'OpenCV'],
       type: 'image',
-      image: 'assets/images/3.jpeg',
+      image: 'assets/images/1.jpeg',
       github: 'https://github.com/23019520/face-extraction-model',
       filter: 'ml',
     }
