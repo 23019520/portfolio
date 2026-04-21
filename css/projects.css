@@ -25,6 +25,15 @@
   box-shadow: 0 12px 40px rgba(0,0,0,0.4);
 }
 
+/* ── FULL CLICK LINK ───────────────── */
+.proj-full-link {
+  display: flex;
+  flex-direction: column;
+  height: 100%;
+  text-decoration: none;
+  color: inherit;
+}
+
 /* ── PREVIEW ───────────────── */
 .proj-preview-wrap {
   position: relative;
@@ -81,6 +90,16 @@
 /* ── BODY ───────────────── */
 .proj-body {
   padding: 18px;
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  flex-grow: 1;
+}
+
+.proj-title-row {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
 }
 
 .proj-title {
@@ -88,6 +107,13 @@
   color: #e2e8f0;
 }
 
+.proj-gh-icon {
+  font-size: 12px;
+  color: #60a5fa;
+  text-decoration: none;
+}
+
+/* subtitle */
 .proj-subtitle {
   font-size: 13px;
   color: #6b85a8;
@@ -111,13 +137,33 @@
 /* ── GITHUB CARD ───────────────── */
 .github-more-card {
   cursor: pointer;
-  display: flex;
-  align-items: center;
-  justify-content: center;
+  min-height: 320px; /* FIXED SIZE */
 }
 
 .gh-card-inner {
+  height: 100%;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  gap: 10px;
+  padding: 20px;
   text-align: center;
+}
+
+.gh-card-title {
+  font-size: 18px;
+  color: #e2e8f0;
+}
+
+.gh-card-sub {
+  font-size: 13px;
+  color: #6b85a8;
+}
+
+.gh-card-cta {
+  font-size: 13px;
+  color: #60a5fa;
 }
 
 /* ── MODAL ───────────────── */
@@ -126,6 +172,7 @@
   inset: 0;
   background: rgba(0,0,0,0.7);
   display: none;
+  z-index: 999;
 }
 
 #ghModalOverlay.open {
@@ -140,6 +187,22 @@
   border-radius: 12px;
   width: 90%;
   max-width: 600px;
+  max-height: 80vh;
+  overflow-y: auto;
+}
+
+.gh-modal-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+#ghModalClose {
+  background: none;
+  border: none;
+  font-size: 20px;
+  color: white;
+  cursor: pointer;
 }
 
 .gh-repo-row {
@@ -148,6 +211,30 @@
   padding: 10px;
   text-decoration: none;
   color: white;
+  border-bottom: 1px solid rgba(255,255,255,0.05);
+}
+
+.gh-repo-row:hover {
+  background: rgba(255,255,255,0.05);
+}
+
+.gh-repo-name {
+  font-size: 14px;
+}
+
+.gh-repo-desc {
+  font-size: 12px;
+  color: #6b85a8;
+}
+
+.gh-repo-stars {
+  font-size: 12px;
+  color: #60a5fa;
+}
+
+.gh-modal-empty {
+  text-align: center;
+  color: #6b85a8;
 }
 
 /* ── ANIMATION ───────────────── */

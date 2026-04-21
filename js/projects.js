@@ -1,12 +1,7 @@
-/**
- * projects.js — Final merged system (Featured + GitHub modal + Filters + Tilt)
- */
-
 (function () {
 
   'use strict';
 
-  /* ── CONFIG ───────────────────────── */
   const GITHUB_USER = '23019520';
   const EXCLUDED_REPOS = ['PhaseOut', 'foodbridge', 'face-extraction-model'];
 
@@ -34,7 +29,8 @@
       subtitle: 'Computer vision pipeline with OpenCV & TensorFlow',
       tags: ['Python', 'TensorFlow', 'OpenCV'],
       type: 'image',
-      image: 'assets/images/1.jpeg',
+      url: 'https://github.com/23019520/face-extraction-model',
+      image: 'assets/images/1.jpg',
       github: 'https://github.com/23019520/face-extraction-model',
       filter: 'ml',
     }
@@ -43,7 +39,6 @@
   const grid = document.getElementById('projectsGrid');
   if (!grid) return;
 
-  /* ── INIT ───────────────────────── */
   function init() {
     renderFeatured();
     renderGithubCard();
@@ -51,7 +46,6 @@
     initTilt();
   }
 
-  /* ── FEATURED CARDS ───────────────── */
   function renderFeatured() {
     FEATURED.forEach(p => {
       const card = document.createElement('div');
@@ -78,12 +72,15 @@
           ${cardBody(p)}
         `;
       } else {
+        // ✅ FULL CLICKABLE CARD
         card.innerHTML = `
-          <div class="proj-preview-wrap proj-image-wrap">
-            <img src="${p.image}" alt="${p.title}" class="proj-cover-img" loading="lazy"/>
-          </div>
+          <a href="${p.url}" target="_blank" rel="noopener" class="proj-full-link">
+            <div class="proj-preview-wrap proj-image-wrap">
+              <img src="${p.image}" alt="${p.title}" class="proj-cover-img" loading="lazy"/>
+            </div>
 
-          ${cardBody(p)}
+            ${cardBody(p)}
+          </a>
         `;
       }
 
@@ -111,7 +108,6 @@
     `;
   }
 
-  /* ── GITHUB CARD ───────────────── */
   function renderGithubCard() {
     const card = document.createElement('div');
     card.className = 'project-card github-more-card';
@@ -129,7 +125,6 @@
     grid.appendChild(card);
   }
 
-  /* ── MODAL ───────────────── */
   function openModal() {
     let overlay = document.getElementById('ghModalOverlay');
 
@@ -205,7 +200,6 @@
       });
   }
 
-  /* ── FILTERS ───────────────── */
   function initFilters() {
     document.querySelectorAll('.filter-btn').forEach(btn => {
       btn.addEventListener('click', () => {
@@ -228,7 +222,6 @@
     });
   }
 
-  /* ── TILT ───────────────── */
   function initTilt() {
     if (typeof VanillaTilt === 'undefined') return;
 
