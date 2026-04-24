@@ -5,70 +5,606 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>Unarine Dzivhani | Full-Stack Developer</title>
   <meta name="description" content="Full-Stack Developer & Computer Science graduate skilled in Flutter, Firebase, Python, and AI/ML. Based in South Africa." />
-
-  <!-- Open Graph -->
   <meta property="og:title" content="Unarine Dzivhani | Full-Stack Developer" />
   <meta property="og:description" content="Full-Stack Developer & Computer Science graduate skilled in Flutter, Firebase, Python, and AI/ML." />
-  <meta property="og:image" content="assets/images/og-image.png" />
   <meta property="og:type" content="website" />
 
-  <!-- Twitter Card -->
-  <meta name="twitter:card" content="summary_large_image" />
-  <meta name="twitter:title" content="Unarine Dzivhani | Full-Stack Developer" />
-  <meta name="twitter:description" content="Full-Stack Developer & Computer Science graduate." />
-  <meta name="twitter:image" content="assets/images/og-image.png" />
-
-
-  <!-- Favicons -->
-  <link rel="icon" type="image/png" sizes="32x32" href="assets/icons/favicon-32.png" />
-  <link rel="icon" type="image/png" sizes="16x16" href="assets/icons/favicon-16.png" />
-  <link rel="apple-touch-icon" href="assets/icons/favicon-180.png" />
-
-  <!-- Google Fonts -->
   <link rel="preconnect" href="https://fonts.googleapis.com" />
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
   <link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@300;400;500;600;700&family=IBM+Plex+Mono:wght@300;400;500&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css" />
 
-  <!-- Font Awesome -->
-  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css" defer />
-
-  <!-- Devicons -->
-  <link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/devicons/devicon@latest/devicon.min.css" />
-
-  <!-- Stylesheets -->
   <link rel="stylesheet" href="css/main.css" />
   <link rel="stylesheet" href="css/nav.css" />
   <link rel="stylesheet" href="css/hero.css" />
-  <link rel="stylesheet" href="css/projects.css" />
   <link rel="stylesheet" href="css/animations.css" />
   <link rel="stylesheet" href="css/responsive.css" />
 
-  <!-- JSON-LD Structured Data -->
-  <script type="application/ld+json">
-  {
-    "@context": "https://schema.org",
-    "@type": "Person",
-    "name": "Unarine Dzivhani",
-    "jobTitle": "Full-Stack Developer",
-    "email": "unarined3@gmail.com",
-    "sameAs": [
-      "https://github.com/23019520",
-      "https://www.linkedin.com/in/unarine-dzivhani-programmer"
-    ],
-    "alumniOf": {
-      "@type": "CollegeOrUniversity",
-      "name": "University of Venda"
+  <style>
+    /* ══════════════════════════════════════════
+       PROJECTS — BENTO GRID
+    ══════════════════════════════════════════ */
+    .projects-section { padding: 100px 0; }
+
+    .project-filters {
+      display: flex;
+      gap: 10px;
+      flex-wrap: wrap;
+      margin-bottom: 48px;
     }
-  }
-  </script>
+    .filter-btn {
+      font-family: 'IBM Plex Mono', monospace;
+      font-size: 11px;
+      letter-spacing: 2px;
+      text-transform: uppercase;
+      padding: 8px 18px;
+      border: 1px solid rgba(255,255,255,0.12);
+      background: transparent;
+      color: rgba(255,255,255,0.4);
+      cursor: pointer;
+      transition: all 0.2s ease;
+      border-radius: 2px;
+    }
+    .filter-btn:hover, .filter-btn.active {
+      border-color: var(--accent, #00e5ff);
+      color: var(--accent, #00e5ff);
+      background: rgba(0,229,255,0.06);
+    }
+
+    .projects-bento {
+      display: grid;
+      grid-template-columns: repeat(12, 1fr);
+      gap: 16px;
+    }
+
+    /* ── Card base ── */
+    .project-card {
+      position: relative;
+      overflow: hidden;
+      border: 1px solid rgba(255,255,255,0.07);
+      background: rgba(255,255,255,0.03);
+      border-radius: 4px;
+      display: flex;
+      flex-direction: column;
+      transition: border-color 0.3s ease, transform 0.3s ease, box-shadow 0.3s ease;
+      min-height: 340px;
+    }
+    .project-card:hover {
+      border-color: rgba(0,229,255,0.35);
+      transform: translateY(-3px);
+      box-shadow: 0 16px 48px rgba(0,0,0,0.4);
+    }
+
+    /* Grid sizes */
+    .project-card.featured { grid-column: span 7; }
+    .project-card.tall     { grid-column: span 5; }
+    .project-card.wide     { grid-column: span 8; }
+    .project-card.small    { grid-column: span 4; }
+    .project-card.half     { grid-column: span 6; }
+    .project-card.third    { grid-column: span 4; }
+    .project-card.two-third{ grid-column: span 8; }
+
+    /* Accent line top */
+    .project-accent-line {
+      position: absolute;
+      top: 0; left: 0; right: 0;
+      height: 2px;
+      background: var(--accent, #00e5ff);
+      transform: scaleX(0);
+      transform-origin: left;
+      transition: transform 0.4s ease;
+      z-index: 5;
+    }
+    .project-card:hover .project-accent-line { transform: scaleX(1); }
+
+    /* ── Preview area with vignette ── */
+    .proj-preview-wrap {
+      position: relative;
+      height: 180px;
+      overflow: hidden;
+      flex-shrink: 0;
+      background: rgba(0,0,0,0.3);
+    }
+
+    .proj-iframe {
+      position: absolute;
+      top: 50%;
+      left: 50%;
+      width: 160%;
+      height: 160%;
+      transform: translate(-50%, -50%) scale(0.55);
+      transform-origin: center center;
+      border: none;
+      pointer-events: none;
+      border-radius: 4px;
+    }
+
+    .proj-preview-vignette {
+      position: absolute;
+      inset: 0;
+      background:
+        radial-gradient(ellipse at center,
+          transparent 30%,
+          rgba(8,12,20,0.55) 65%,
+          rgba(8,12,20,0.92) 100%
+        );
+      pointer-events: none;
+      z-index: 2;
+    }
+
+    .proj-iframe-overlay {
+      position: absolute;
+      inset: 0;
+      opacity: 0;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      background: rgba(0,0,0,0);
+      transition: opacity 0.3s, background 0.3s;
+      z-index: 3;
+    }
+    .project-card:hover .proj-iframe-overlay {
+      opacity: 1;
+      background: rgba(0,0,0,0.45);
+    }
+    .proj-visit-btn {
+      font-family: 'IBM Plex Mono', monospace;
+      font-size: 11px;
+      letter-spacing: 2px;
+      text-transform: uppercase;
+      background: var(--accent, #00e5ff);
+      color: #000;
+      padding: 9px 20px;
+      border-radius: 2px;
+      text-decoration: none;
+      font-weight: 600;
+      transition: opacity 0.2s;
+    }
+    .proj-visit-btn:hover { opacity: 0.85; }
+
+    .proj-cover-img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      transition: transform 0.4s ease;
+    }
+    .project-card:hover .proj-cover-img { transform: scale(1.04); }
+
+    /* ── Placeholder preview (for cards with no image/url) ── */
+    .proj-placeholder {
+      width: 100%;
+      height: 100%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      background: rgba(0,229,255,0.03);
+      border-bottom: 1px solid rgba(0,229,255,0.08);
+    }
+    .proj-placeholder-icon {
+      font-size: 48px;
+      opacity: 0.12;
+      color: var(--accent, #00e5ff);
+    }
+
+    /* ── Card body ── */
+    .proj-body {
+      padding: 22px 24px 24px;
+      display: flex;
+      flex-direction: column;
+      gap: 10px;
+      flex-grow: 1;
+    }
+
+    .project-tag {
+      font-family: 'IBM Plex Mono', monospace;
+      font-size: 10px;
+      letter-spacing: 2px;
+      text-transform: uppercase;
+      color: var(--accent, #00e5ff);
+      opacity: 0.8;
+    }
+    .project-name {
+      font-size: clamp(16px, 1.6vw, 20px);
+      font-weight: 600;
+      color: #f0f0f0;
+      line-height: 1.2;
+    }
+    .project-desc {
+      font-size: 13px;
+      color: rgba(255,255,255,0.45);
+      line-height: 1.65;
+      flex-grow: 1;
+    }
+    .project-stack {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 6px;
+      margin-top: 4px;
+    }
+    .stack-pill {
+      font-family: 'IBM Plex Mono', monospace;
+      font-size: 10px;
+      letter-spacing: 1px;
+      padding: 3px 10px;
+      border: 1px solid rgba(255,255,255,0.1);
+      color: rgba(255,255,255,0.4);
+      border-radius: 2px;
+    }
+    .project-links {
+      display: flex;
+      gap: 16px;
+      align-items: center;
+      margin-top: 8px;
+    }
+    .project-link {
+      font-family: 'IBM Plex Mono', monospace;
+      font-size: 11px;
+      letter-spacing: 1px;
+      color: var(--accent, #00e5ff);
+      text-decoration: none;
+      display: flex;
+      align-items: center;
+      gap: 6px;
+      transition: opacity 0.2s;
+    }
+    .project-link:hover { opacity: 0.65; }
+
+    .project-number {
+      position: absolute;
+      bottom: 20px;
+      right: 24px;
+      font-family: 'IBM Plex Mono', monospace;
+      font-size: 52px;
+      font-weight: 700;
+      color: rgba(255,255,255,0.03);
+      line-height: 1;
+      pointer-events: none;
+      user-select: none;
+    }
+
+    /* ── "More projects" banner card ── */
+    .project-card.more-card {
+      background: rgba(0,229,255,0.03);
+      border: 1px dashed rgba(0,229,255,0.18);
+      min-height: 200px;
+      align-items: center;
+      justify-content: center;
+      text-align: center;
+      cursor: pointer;
+      text-decoration: none;
+      display: flex;
+      flex-direction: column;
+      gap: 14px;
+      padding: 32px 24px;
+      transition: border-color 0.3s ease, background 0.3s ease, transform 0.3s ease;
+    }
+    .project-card.more-card:hover {
+      border-color: rgba(0,229,255,0.5);
+      background: rgba(0,229,255,0.06);
+      transform: translateY(-3px);
+      box-shadow: 0 16px 48px rgba(0,0,0,0.4);
+    }
+    .more-card-icon {
+      font-size: 28px;
+      color: var(--accent, #00e5ff);
+      opacity: 0.6;
+    }
+    .more-card-label {
+      font-family: 'IBM Plex Mono', monospace;
+      font-size: 10px;
+      letter-spacing: 3px;
+      text-transform: uppercase;
+      color: var(--accent, #00e5ff);
+      opacity: 0.6;
+    }
+    .more-card-heading {
+      font-size: 18px;
+      font-weight: 600;
+      color: #f0f0f0;
+      line-height: 1.3;
+    }
+    .more-card-sub {
+      font-size: 12px;
+      color: rgba(255,255,255,0.3);
+      font-family: 'IBM Plex Mono', monospace;
+      letter-spacing: 1px;
+    }
+    .more-card-btn {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      font-family: 'IBM Plex Mono', monospace;
+      font-size: 11px;
+      letter-spacing: 2px;
+      text-transform: uppercase;
+      color: #000;
+      background: var(--accent, #00e5ff);
+      padding: 9px 22px;
+      border-radius: 2px;
+      font-weight: 700;
+      margin-top: 4px;
+      transition: opacity 0.2s;
+    }
+    .more-card-btn:hover { opacity: 0.85; }
+
+    .project-card.hidden { display: none; }
+
+    /* ══════════════════════════════════════════
+       RECURSION EASTER EGG MODAL
+    ══════════════════════════════════════════ */
+    #recursionOverlay {
+      position: fixed;
+      inset: 0;
+      background: rgba(0,0,0,0.8);
+      display: none;
+      align-items: center;
+      justify-content: center;
+      z-index: 9999;
+      backdrop-filter: blur(6px);
+      pointer-events: auto;
+    }
+    #recursionOverlay.open { display: flex; }
+    #recursionModal {
+      background: #080c14;
+      border: 1px solid rgba(0,229,255,0.2);
+      border-radius: 4px;
+      padding: 48px 44px;
+      max-width: 480px;
+      width: 90%;
+      text-align: center;
+      position: relative;
+      animation: modalIn 0.3s cubic-bezier(0.34,1.56,0.64,1) forwards;
+      pointer-events: auto;
+      cursor: default;
+    }
+    @keyframes modalIn {
+      from { opacity: 0; transform: scale(0.88) translateY(20px); }
+      to   { opacity: 1; transform: scale(1) translateY(0); }
+    }
+    .recursion-top-line {
+      position: absolute;
+      top: 0; left: 0; right: 0;
+      height: 2px;
+      background: linear-gradient(90deg, transparent, var(--accent,#00e5ff), transparent);
+    }
+    .recursion-icon {
+      font-size: 36px;
+      margin-bottom: 16px;
+      animation: spin 4s linear infinite;
+      display: inline-block;
+    }
+    @keyframes spin {
+      from { transform: rotate(0deg); }
+      to { transform: rotate(360deg); }
+    }
+    .recursion-label {
+      font-family: 'IBM Plex Mono', monospace;
+      font-size: 10px;
+      letter-spacing: 3px;
+      text-transform: uppercase;
+      color: var(--accent, #00e5ff);
+      margin-bottom: 16px;
+      opacity: 0.7;
+    }
+    .recursion-headline {
+      font-size: 20px;
+      font-weight: 700;
+      color: #f0f0f0;
+      margin-bottom: 12px;
+      line-height: 1.3;
+    }
+    .recursion-body {
+      font-size: 14px;
+      color: rgba(255,255,255,0.5);
+      line-height: 1.7;
+      margin-bottom: 28px;
+    }
+    .recursion-code {
+      font-family: 'IBM Plex Mono', monospace;
+      font-size: 12px;
+      background: rgba(0,229,255,0.05);
+      border: 1px solid rgba(0,229,255,0.1);
+      border-radius: 3px;
+      padding: 12px 16px;
+      text-align: left;
+      color: rgba(0,229,255,0.7);
+      margin-bottom: 28px;
+      line-height: 1.6;
+    }
+    .recursion-btns {
+      display: flex;
+      gap: 12px;
+      justify-content: center;
+    }
+    .recursion-btn-primary {
+      font-family: 'IBM Plex Mono', monospace;
+      font-size: 11px;
+      letter-spacing: 1.5px;
+      text-transform: uppercase;
+      padding: 11px 24px;
+      background: var(--accent, #00e5ff);
+      color: #000;
+      font-weight: 700;
+      border: none;
+      border-radius: 2px;
+      cursor: pointer;
+      text-decoration: none;
+      transition: opacity 0.2s;
+    }
+    .recursion-btn-primary:hover { opacity: 0.8; }
+    .recursion-btn-secondary {
+      font-family: 'IBM Plex Mono', monospace;
+      font-size: 11px;
+      letter-spacing: 1.5px;
+      text-transform: uppercase;
+      padding: 11px 24px;
+      background: transparent;
+      color: rgba(255,255,255,0.4);
+      border: 1px solid rgba(255,255,255,0.1);
+      border-radius: 2px;
+      cursor: pointer;
+      transition: border-color 0.2s, color 0.2s;
+    }
+    .recursion-btn-secondary:hover {
+      border-color: rgba(255,255,255,0.3);
+      color: rgba(255,255,255,0.7);
+    }
+
+    /* ══════════════════════════════════════════
+       CONTACT REDESIGN
+    ══════════════════════════════════════════ */
+    .contact-section { padding: 100px 0 60px; }
+    .contact-split {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 80px;
+      align-items: start;
+      margin-top: 60px;
+    }
+    .contact-left h3 {
+      font-size: clamp(24px, 3.5vw, 40px);
+      font-weight: 700;
+      line-height: 1.15;
+      margin-bottom: 16px;
+      color: #f0f0f0;
+    }
+    .contact-left > p {
+      font-size: 14px;
+      color: rgba(255,255,255,0.45);
+      line-height: 1.8;
+      margin-bottom: 36px;
+      max-width: 360px;
+    }
+    .contact-method {
+      display: flex;
+      align-items: center;
+      gap: 16px;
+      padding: 14px 0;
+      border-bottom: 1px solid rgba(255,255,255,0.06);
+      text-decoration: none;
+      color: inherit;
+      transition: color 0.2s;
+    }
+    .contact-method:hover { color: var(--accent, #00e5ff); }
+    .contact-method-icon {
+      width: 34px; height: 34px;
+      border: 1px solid rgba(255,255,255,0.1);
+      border-radius: 2px;
+      display: flex; align-items: center; justify-content: center;
+      font-size: 13px;
+      color: var(--accent, #00e5ff);
+      flex-shrink: 0;
+    }
+    .contact-method-label {
+      font-family: 'IBM Plex Mono', monospace;
+      font-size: 10px;
+      letter-spacing: 2px;
+      text-transform: uppercase;
+      color: rgba(255,255,255,0.25);
+      display: block;
+      margin-bottom: 2px;
+    }
+    .contact-method-value { font-size: 13px; color: rgba(255,255,255,0.6); }
+
+    .zapier-cta {
+      border: 1px solid rgba(255,255,255,0.08);
+      background: rgba(255,255,255,0.02);
+      border-radius: 4px;
+      padding: 44px 36px;
+      text-align: center;
+      position: relative;
+      overflow: hidden;
+    }
+    .zapier-cta::before {
+      content: '';
+      position: absolute;
+      top: 0; left: 0; right: 0;
+      height: 2px;
+      background: linear-gradient(90deg, transparent, var(--accent, #00e5ff), transparent);
+    }
+    .zapier-cta-icon {
+      width: 52px; height: 52px;
+      border: 1px solid rgba(0,229,255,0.2);
+      border-radius: 50%;
+      display: flex; align-items: center; justify-content: center;
+      margin: 0 auto 18px;
+      font-size: 20px;
+      color: var(--accent, #00e5ff);
+    }
+    .zapier-cta h4 { font-size: 19px; font-weight: 600; color: #f0f0f0; margin-bottom: 8px; }
+    .zapier-cta p { font-size: 13px; color: rgba(255,255,255,0.4); line-height: 1.7; margin-bottom: 28px; }
+    .btn-contact {
+      display: inline-flex; align-items: center; gap: 10px;
+      padding: 13px 30px;
+      background: var(--accent, #00e5ff);
+      color: #000; font-weight: 700; font-size: 13px; letter-spacing: 0.5px;
+      border-radius: 2px; text-decoration: none;
+      transition: opacity 0.2s, transform 0.2s;
+    }
+    .btn-contact:hover { opacity: 0.85; transform: translateY(-2px); }
+    .zapier-note {
+      margin-top: 14px;
+      font-family: 'IBM Plex Mono', monospace;
+      font-size: 10px; letter-spacing: 1px;
+      color: rgba(255,255,255,0.18);
+      text-transform: uppercase;
+    }
+
+    @media (max-width: 900px) {
+      .project-card.featured,
+      .project-card.tall,
+      .project-card.wide,
+      .project-card.small,
+      .project-card.half,
+      .project-card.third,
+      .project-card.two-third { grid-column: span 6; }
+      .contact-split { grid-template-columns: 1fr; gap: 48px; }
+    }
+    @media (max-width: 600px) {
+      .project-card.featured,
+      .project-card.tall,
+      .project-card.wide,
+      .project-card.small,
+      .project-card.half,
+      .project-card.third,
+      .project-card.two-third { grid-column: span 12; }
+    }
+  </style>
 </head>
 <body class="dark-mode" data-theme="dark">
 
-  <!-- Custom Cursor -->
   <div class="cursor-dot" id="cursorDot"></div>
   <div class="cursor-ring" id="cursorRing"></div>
 
-  <!-- ═══════════════════════════════════════ NAVIGATION -->
+  <!-- RECURSION EASTER EGG MODAL -->
+  <div id="recursionOverlay">
+    <div id="recursionModal">
+      <div class="recursion-top-line"></div>
+      <div class="recursion-icon">♻️</div>
+      <div class="recursion-label">Warning: Infinite Loop Detected</div>
+      <div class="recursion-headline">You're about to visit a portfolio…<br/>that links to itself.</div>
+      <div class="recursion-body">
+        Congratulations. You found the recursion. This portfolio links to this portfolio,
+        which links to this portfolio. Stack overflow imminent. Base case not found.
+      </div>
+      <div class="recursion-code">
+function visitPortfolio(url) {<br/>
+&nbsp;&nbsp;// opens portfolio<br/>
+&nbsp;&nbsp;return visitPortfolio(url); // 🔁<br/>
+&nbsp;&nbsp;// RangeError: Maximum call stack exceeded<br/>
+}
+      </div>
+      <div class="recursion-btns">
+        <a id="recursionProceed" href="https://23019520.github.io/portfolio/" target="_blank" rel="noopener" class="recursion-btn-primary">
+          Proceed Anyway
+        </a>
+        <button class="recursion-btn-secondary" onclick="document.getElementById('recursionOverlay').classList.remove('open')">
+          Abort Mission
+        </button>
+      </div>
+    </div>
+  </div>
+
   <header id="navbar" class="navbar">
     <nav class="nav-inner">
       <a href="#hero" class="nav-logo">UD<span class="accent">.</span></a>
@@ -88,7 +624,6 @@
         </button>
       </div>
     </nav>
-    <!-- Mobile Overlay Menu -->
     <div class="mobile-menu" id="mobileMenu">
       <ul class="mobile-links">
         <li><a href="#about" class="mobile-link">01 About</a></li>
@@ -102,15 +637,13 @@
 
   <main>
 
-    <!-- ═══════════════════════════════════════ HERO -->
+    <!-- HERO -->
     <section id="hero" class="hero-section">
       <canvas id="heroCanvas"></canvas>
       <div class="hero-content">
         <p class="hero-eyebrow gsap-hero-eyebrow">Based in South Africa</p>
         <h1 class="hero-name gsap-hero-name">Unarine<br /><span class="accent">Dzivhani</span></h1>
-        <p class="hero-subtitle gsap-hero-subtitle">
-          I'm a <span id="typedText"></span>
-        </p>
+        <p class="hero-subtitle gsap-hero-subtitle">I'm a <span id="typedText"></span></p>
         <div class="hero-ctas gsap-hero-ctas">
           <a href="#projects" class="btn btn-primary">View My Work</a>
           <a href="assets/cv/Unarine_Dzivhani_CV.pdf" class="btn btn-outline" target="_blank" rel="noopener">
@@ -124,7 +657,7 @@
       </div>
     </section>
 
-    <!-- ═══════════════════════════════════════ ABOUT -->
+    <!-- ABOUT -->
     <section id="about" class="section about-section">
       <div class="container">
         <div class="section-label gsap-section-label">
@@ -137,18 +670,9 @@
             <p>Computer Science graduate from the University of Venda with a relentless drive for clean code and thoughtful UX. I turn requirements into real products — from cross-platform mobile apps to ML pipelines to game mechanics.</p>
             <p>I believe great software lives at the intersection of engineering precision and creative ambition. Whether I'm training a vision model, wiring up real-time Firebase streams, or tutoring the next generation of developers, I bring the same attention to detail.</p>
             <div class="about-stats">
-              <div class="stat-item">
-                <span class="stat-number">4+</span>
-                <span class="stat-label">Projects Shipped</span>
-              </div>
-              <div class="stat-item">
-                <span class="stat-number">2+</span>
-                <span class="stat-label">Years Coding</span>
-              </div>
-              <div class="stat-item">
-                <span class="stat-number">∞</span>
-                <span class="stat-label">Cups of Coffee</span>
-              </div>
+              <div class="stat-item"><span class="stat-number">8+</span><span class="stat-label">Projects Shipped</span></div>
+              <div class="stat-item"><span class="stat-number">2+</span><span class="stat-label">Years Coding</span></div>
+              <div class="stat-item"><span class="stat-number">∞</span><span class="stat-label">Cups of Coffee</span></div>
             </div>
           </div>
           <div class="about-photo gsap-about-photo">
@@ -164,7 +688,7 @@
       </div>
     </section>
 
-    <!-- ═══════════════════════════════════════ PROJECTS -->
+    <!-- PROJECTS — BENTO -->
     <section id="projects" class="section projects-section">
       <div class="container">
         <div class="section-label gsap-section-label">
@@ -172,19 +696,159 @@
           <span class="section-title">Projects</span>
         </div>
         <h2 class="section-heading">Things I've Built</h2>
+
         <div class="project-filters">
           <button class="filter-btn active" data-filter="all">All</button>
           <button class="filter-btn" data-filter="mobile">Mobile</button>
+          <button class="filter-btn" data-filter="web">Web</button>
           <button class="filter-btn" data-filter="ml">ML / AI</button>
-          <button class="filter-btn" data-filter="game">Game Dev</button>
+
         </div>
-        <div class="projects-grid" id="projectsGrid">
-          <!-- Populated by js/projects.js (GitHub API + fallback) -->
+
+        <div class="projects-bento" id="projectsGrid">
+
+          <!-- 01 PhaseOut — FEATURED (iframe preview) -->
+          <div class="project-card featured" data-category="mobile">
+            <div class="project-accent-line"></div>
+            <div class="proj-preview-wrap">
+              <iframe class="proj-iframe" src="https://23019520.github.io/phaseout-privacy/" loading="lazy" sandbox="allow-scripts allow-same-origin"></iframe>
+              <div class="proj-preview-vignette"></div>
+              <div class="proj-iframe-overlay">
+                <a href="https://23019520.github.io/phaseout-privacy/" target="_blank" rel="noopener" class="proj-visit-btn">Visit Site</a>
+              </div>
+            </div>
+            <div class="proj-body">
+              <div class="project-tag">Featured · Mobile · Android</div>
+              <div class="project-name">PhaseOut</div>
+              <div class="project-desc">Fully autonomous Android sleep-automation app. Kotlin foreground service, on-device ML battery prediction, shipped to real users across two beta iterations.</div>
+              <div class="project-stack">
+                <span class="stack-pill">Flutter</span>
+                <span class="stack-pill">Kotlin</span>
+                <span class="stack-pill">SQLite</span>
+                <span class="stack-pill">Firebase</span>
+                <span class="stack-pill">On-device ML</span>
+              </div>
+              <div class="project-links">
+                <a href="https://23019520.github.io/phaseout-privacy/" target="_blank" rel="noopener" class="project-link"><i class="fa-solid fa-arrow-up-right-from-square"></i> Visit</a>
+                <a href="https://github.com/23019520/PhaseOut" target="_blank" rel="noopener" class="project-link"><i class="fa-brands fa-github"></i> GitHub</a>
+              </div>
+            </div>
+            <div class="project-number">01</div>
+          </div>
+
+          <!-- 02 FoodBridge — TALL (iframe preview) -->
+          <div class="project-card tall" data-category="web">
+            <div class="project-accent-line"></div>
+            <div class="proj-preview-wrap">
+              <iframe class="proj-iframe" src="https://foodbridge-ebon.vercel.app/" loading="lazy" sandbox="allow-scripts allow-same-origin"></iframe>
+              <div class="proj-preview-vignette"></div>
+              <div class="proj-iframe-overlay">
+                <a href="https://foodbridge-ebon.vercel.app/" target="_blank" rel="noopener" class="proj-visit-btn">Visit Site</a>
+              </div>
+            </div>
+            <div class="proj-body">
+              <div class="project-tag">Live · Web · Full-stack</div>
+              <div class="project-name">FoodBridge</div>
+              <div class="project-desc">Local food marketplace connecting home cooks and vendors with nearby buyers. Freemium model, full seller & product management flows.</div>
+              <div class="project-stack">
+                <span class="stack-pill">TypeScript</span>
+                <span class="stack-pill">Next.js</span>
+                <span class="stack-pill">Full-stack</span>
+              </div>
+              <div class="project-links">
+                <a href="https://foodbridge-ebon.vercel.app/" target="_blank" rel="noopener" class="project-link"><i class="fa-solid fa-arrow-up-right-from-square"></i> Live App</a>
+                <a href="https://github.com/23019520/foodbridge" target="_blank" rel="noopener" class="project-link"><i class="fa-brands fa-github"></i> GitHub</a>
+              </div>
+            </div>
+            <div class="project-number">02</div>
+          </div>
+
+          <!-- 03 Face Extraction — WIDE (image) -->
+          <div class="project-card wide" data-category="ml">
+            <div class="project-accent-line"></div>
+            <div class="proj-preview-wrap">
+              <img src="assets/images/1.jpg" alt="Face Extraction Model" class="proj-cover-img" loading="lazy" />
+              <div class="proj-preview-vignette"></div>
+            </div>
+            <div class="proj-body">
+              <div class="project-tag">ML / AI · Computer Vision</div>
+              <div class="project-name">Face Extraction Model</div>
+              <div class="project-desc">Computer vision model to detect and extract faces from full-body images. Custom TensorFlow pipeline with image preprocessing, normalisation, and augmentation for generalisation.</div>
+              <div class="project-stack">
+                <span class="stack-pill">Python</span>
+                <span class="stack-pill">TensorFlow</span>
+                <span class="stack-pill">OpenCV</span>
+                <span class="stack-pill">Google Colab</span>
+              </div>
+              <div class="project-links">
+                <a href="https://github.com/23019520/face-extraction-model" target="_blank" rel="noopener" class="project-link"><i class="fa-brands fa-github"></i> GitHub</a>
+              </div>
+            </div>
+            <div class="project-number">03</div>
+          </div>
+
+          <!-- 04 Portfolio — SMALL (iframe preview + easter egg) -->
+          <div class="project-card small" data-category="web" id="portfolioCard" style="cursor:pointer;">
+            <div class="project-accent-line"></div>
+            <div class="proj-preview-wrap">
+              <iframe class="proj-iframe" src="https://23019520.github.io/portfolio/" loading="lazy" sandbox="allow-scripts allow-same-origin"></iframe>
+              <div class="proj-preview-vignette"></div>
+              <div class="proj-iframe-overlay">
+                <span class="proj-visit-btn">Visit Site</span>
+              </div>
+            </div>
+            <div class="proj-body">
+              <div class="project-tag">Web · Design · You Are Here</div>
+              <div class="project-name">Portfolio Site</div>
+              <div class="project-desc">This site. GSAP animations, Three.js canvas, custom cursor, GitHub API. Built in vanilla JS. Click to enter the recursion.</div>
+              <div class="project-stack">
+                <span class="stack-pill">HTML</span>
+                <span class="stack-pill">CSS</span>
+                <span class="stack-pill">Vanilla JS</span>
+              </div>
+            </div>
+            <div class="project-number">04</div>
+          </div>
+
+          <!-- 05 December Projects — HALF (single card for all december projects) -->
+          <div class="project-card half" data-category="ml">
+            <div class="project-accent-line"></div>
+            <div class="proj-body" style="padding-top: 32px;">
+              <div class="project-tag">Dec 2024 · ML · Game · Mobile · Web</div>
+              <div class="project-name">more Projects</div>
+              <div class="project-desc">A collection of projects not cell worthy: a face recognition system, a first shipped game, a university marketplace app, and an ML model overview notebook — each exploring a different area of the stack.</div>
+              <div class="project-stack">
+                <span class="stack-pill">Python</span>
+                <span class="stack-pill">OpenCV</span>
+                <span class="stack-pill">Godot</span>
+                <span class="stack-pill">Firebase</span>
+                <span class="stack-pill">Jupyter</span>
+                <span class="stack-pill">TensorFlow</span>
+              </div>
+              <div class="project-links" style="margin-top: 16px;">
+                <a href="https://github.com/23019520/December-projects" target="_blank" rel="noopener" class="project-link"><i class="fa-brands fa-github"></i> GitHub</a>
+              </div>
+            </div>
+            <div class="project-number">05</div>
+          </div>
+
+          <!-- 06 View GitHub — HALF -->
+          <a href="https://github.com/23019520" target="_blank" rel="noopener"
+             class="project-card more-card half" data-category="all">
+            <div class="more-card-icon"><i class="fa-brands fa-github"></i></div>
+            <div class="more-card-label">And more</div>
+            <div class="more-card-heading">More projects on GitHub</div>
+            <div class="more-card-sub">face recognition · games · experiments · and more</div>
+            <span class="more-card-btn">
+              <i class="fa-brands fa-github"></i> Visit GitHub
+            </span>
+          </a>
+
         </div>
       </div>
     </section>
 
-    <!-- ═══════════════════════════════════════ SKILLS -->
+    <!-- SKILLS -->
     <section id="skills" class="section skills-section">
       <div class="container">
         <div class="section-label gsap-section-label">
@@ -192,8 +856,7 @@
           <span class="section-title">Skills</span>
         </div>
         <h2 class="section-heading">Tech Stack</h2>
-        <p class="skills-philosophy">I pick the right tool for the job. My stack leans mobile-first, but I'm equally comfortable at the ML layer or deep in game engine internals.</p>
-
+        <p class="skills-philosophy">I pick the right tool for the job. My stack leans mobile-first, but I'm equally comfortable at the ML layer or deep in system-level Android internals.</p>
         <div class="skills-groups">
           <div class="skill-group gsap-skill-group">
             <h3 class="skill-group-title">Mobile & Web</h3>
@@ -201,6 +864,7 @@
               <div class="skill-icon-item"><img src="https://cdn.jsdelivr.net/gh/devicons/devicon@latest/icons/flutter/flutter-original.svg" alt="Flutter" /><span>Flutter</span></div>
               <div class="skill-icon-item"><img src="https://cdn.jsdelivr.net/gh/devicons/devicon@latest/icons/firebase/firebase-plain.svg" alt="Firebase" /><span>Firebase</span></div>
               <div class="skill-icon-item"><img src="https://cdn.jsdelivr.net/gh/devicons/devicon@latest/icons/dart/dart-original.svg" alt="Dart" /><span>Dart</span></div>
+              <div class="skill-icon-item"><img src="https://cdn.jsdelivr.net/gh/devicons/devicon@latest/icons/typescript/typescript-original.svg" alt="TypeScript" /><span>TypeScript</span></div>
               <div class="skill-icon-item"><img src="https://cdn.jsdelivr.net/gh/devicons/devicon@latest/icons/html5/html5-original.svg" alt="HTML5" /><span>HTML5</span></div>
               <div class="skill-icon-item"><img src="https://cdn.jsdelivr.net/gh/devicons/devicon@latest/icons/css3/css3-original.svg" alt="CSS3" /><span>CSS3</span></div>
               <div class="skill-icon-item"><img src="https://cdn.jsdelivr.net/gh/devicons/devicon@latest/icons/php/php-original.svg" alt="PHP" /><span>PHP</span></div>
@@ -235,7 +899,7 @@
       </div>
     </section>
 
-    <!-- ═══════════════════════════════════════ EXPERIENCE -->
+    <!-- EXPERIENCE -->
     <section id="experience" class="section experience-section">
       <div class="container">
         <div class="section-label gsap-section-label">
@@ -251,9 +915,9 @@
               <h3 class="timeline-role">Tutor — AI Fundamentals & Data Structures</h3>
               <p class="timeline-company">University of Venda</p>
               <ul class="timeline-bullets">
-                <li>Tutored undergraduates in Artificial Intelligence and Data Structures & Algorithms</li>
-                <li>Designed supplementary exercises improving student comprehension and pass rates</li>
-                <li>Mentored students through complex algorithm design and analysis challenges</li>
+                <li>Tutored 60+ students per month in Artificial Intelligence and Data Structures & Algorithms</li>
+                <li>Achieved a 100% pass rate across all programming modules taught</li>
+                <li>Ran both university-organised sessions and a privately paid tutoring programme</li>
               </ul>
             </div>
           </div>
@@ -264,8 +928,8 @@
               <h3 class="timeline-role">BSc Computer Science</h3>
               <p class="timeline-company">University of Venda</p>
               <ul class="timeline-bullets">
-                <li>Graduated with a strong foundation in software development, system analysis, and QA principles</li>
-                <li>Shipped 4 independent projects spanning mobile apps, ML models, and game development</li>
+                <li>Graduated with distinction-level results in Software Engineering, Distributed Operating Systems, and Systems Analysis in final year</li>
+                <li>Shipped 8+ independent projects spanning mobile apps, ML models, and game development</li>
               </ul>
             </div>
           </div>
@@ -273,7 +937,7 @@
       </div>
     </section>
 
-    <!-- ═══════════════════════════════════════ CONTACT -->
+    <!-- CONTACT -->
     <section id="contact" class="section contact-section">
       <div class="container">
         <div class="section-label gsap-section-label">
@@ -281,36 +945,32 @@
           <span class="section-title">Contact</span>
         </div>
         <h2 class="section-heading contact-heading">Let's Build<br /><span class="accent">Something.</span></h2>
-        <div class="contact-grid">
-          <div class="contact-form-wrap gsap-contact-form">
-            <form id="contactForm" action="https://formspree.io/f/mdapopog" method="POST" novalidate>
-              <div class="form-group">
-                <label for="name">Name</label>
-                <input type="text" id="name" name="name" placeholder="Your name" required />
-              </div>
-              <div class="form-group">
-                <label for="email">Email</label>
-                <input type="email" id="email" name="email" placeholder="your@email.com" required />
-              </div>
-              <div class="form-group">
-                <label for="message">Message</label>
-                <textarea id="message" name="message" rows="5" placeholder="Tell me about your project..." required></textarea>
-              </div>
-              <button type="submit" class="btn btn-primary btn-full">
-                <span class="btn-text">Send Message</span>
-                <span class="btn-loader" style="display:none;"><i class="fa-solid fa-circle-notch fa-spin"></i></span>
-              </button>
-              <p class="form-success" id="formSuccess" style="display:none;">Message sent! I'll be in touch soon.</p>
-              <p class="form-error" id="formError" style="display:none;">Something went wrong. Try emailing me directly.</p>
-            </form>
+        <div class="contact-split">
+          <div class="contact-left">
+            <h3>Get in touch.<br />I respond fast.</h3>
+            <p>Whether you have a project in mind, a role to fill, or just want to connect — drop me a message and it lands straight in my inbox.</p>
+            <a href="mailto:unarined3@gmail.com" class="contact-method">
+              <div class="contact-method-icon"><i class="fa-solid fa-envelope"></i></div>
+              <div><span class="contact-method-label">Email</span><span class="contact-method-value">unarined3@gmail.com</span></div>
+            </a>
+            <a href="https://www.linkedin.com/in/unarine-dzivhani-programmer" target="_blank" rel="noopener" class="contact-method">
+              <div class="contact-method-icon"><i class="fa-brands fa-linkedin-in"></i></div>
+              <div><span class="contact-method-label">LinkedIn</span><span class="contact-method-value">unarine-dzivhani-programmer</span></div>
+            </a>
+            <a href="https://github.com/23019520" target="_blank" rel="noopener" class="contact-method">
+              <div class="contact-method-icon"><i class="fa-brands fa-github"></i></div>
+              <div><span class="contact-method-label">GitHub</span><span class="contact-method-value">github.com/23019520</span></div>
+            </a>
           </div>
-          <div class="contact-info">
-            <p class="contact-direct">Or reach me directly:</p>
-            <a href="mailto:unarined3@gmail.com" class="contact-email">unarined3@gmail.com</a>
-            <div class="social-links">
-              <a href="https://github.com/23019520" target="_blank" rel="noopener" aria-label="GitHub"><i class="fa-brands fa-github"></i></a>
-              <a href="https://www.linkedin.com/in/unarine-dzivhani-programmer" target="_blank" rel="noopener" aria-label="LinkedIn"><i class="fa-brands fa-linkedin-in"></i></a>
-              <a href="mailto:unarined3@gmail.com" aria-label="Email"><i class="fa-solid fa-envelope"></i></a>
+          <div class="contact-right">
+            <div class="zapier-cta">
+              <div class="zapier-cta-icon"><i class="fa-solid fa-paper-plane"></i></div>
+              <h4>Send a Message</h4>
+              <p>Fill out the form — it takes 30 seconds and goes directly to my Gmail so nothing gets lost.</p>
+              <a href="https://cmobpx1x1000ti0z2zfar7ix9.zapier.app/" target="_blank" rel="noopener" class="btn-contact">
+                <i class="fa-solid fa-arrow-up-right-from-square"></i> Open Contact Form
+              </a>
+              <p class="zapier-note">Powered by Zapier · Delivered to Gmail</p>
             </div>
           </div>
         </div>
@@ -319,7 +979,6 @@
 
   </main>
 
-  <!-- ═══════════════════════════════════════ FOOTER -->
   <footer class="footer">
     <div class="container footer-inner">
       <p class="footer-copy">© 2026 Unarine Dzivhani — Built with passion &amp; vanilla JS</p>
@@ -328,25 +987,56 @@
     </div>
   </footer>
 
-  <!-- ═══════════════════════════════════════ SCRIPTS -->
-  <!-- Three.js -->
   <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js" defer></script>
-  <!-- GSAP + ScrollTrigger -->
   <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/gsap.min.js" defer></script>
   <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/ScrollTrigger.min.js" defer></script>
-  <!-- Typed.js -->
   <script src="https://cdnjs.cloudflare.com/ajax/libs/typed.js/2.0.16/typed.umd.js" defer></script>
-  <!-- vanilla-tilt -->
   <script src="https://cdnjs.cloudflare.com/ajax/libs/vanilla-tilt/1.8.1/vanilla-tilt.min.js" defer></script>
 
-  <!-- App scripts -->
   <script src="js/cursor.js" defer></script>
   <script src="js/theme.js" defer></script>
   <script src="js/three-scene.js" defer></script>
   <script src="js/typed-init.js" defer></script>
   <script src="js/github-api.js" defer></script>
-  <script src="js/projects.js" defer></script>
   <script src="js/gsap-animations.js" defer></script>
   <script src="js/main.js" defer></script>
+
+  <script>
+    // Filter buttons
+    document.querySelectorAll('.filter-btn').forEach(btn => {
+      btn.addEventListener('click', () => {
+        document.querySelectorAll('.filter-btn').forEach(b => b.classList.remove('active'));
+        btn.classList.add('active');
+        const filter = btn.dataset.filter;
+        document.querySelectorAll('.project-card').forEach(card => {
+          // "more-card" always visible, and "all" filter shows everything
+          const isMoreCard = card.classList.contains('more-card');
+          if (isMoreCard || filter === 'all') {
+            card.classList.remove('hidden');
+          } else {
+            card.classList.toggle('hidden', card.dataset.category !== filter);
+          }
+        });
+      });
+    });
+
+    // Easter egg — Portfolio card triggers recursion modal
+    document.getElementById('portfolioCard').addEventListener('click', () => {
+      document.getElementById('recursionOverlay').classList.add('open');
+    });
+
+    // Close modal on overlay click
+    document.getElementById('recursionOverlay').addEventListener('click', e => {
+      if (e.target === document.getElementById('recursionOverlay')) {
+        document.getElementById('recursionOverlay').classList.remove('open');
+      }
+    });
+
+    // Close modal after proceeding
+    document.getElementById('recursionProceed').addEventListener('click', () => {
+      setTimeout(() => document.getElementById('recursionOverlay').classList.remove('open'), 300);
+    });
+  </script>
+
 </body>
 </html>
