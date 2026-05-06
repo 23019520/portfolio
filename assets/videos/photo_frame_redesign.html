@@ -1,185 +1,157 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <style>
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+    html, body { width: 100%; height: 100%; overflow: hidden; background: transparent; }
+    canvas { display: block; width: 100%; height: 100%; }
+  </style>
+</head>
+<body>
+  <canvas id="c"></canvas>
+  <script>
+    const canvas = document.getElementById('c');
+    const ctx = canvas.getContext('2d');
 
-<style>
-  .pf-wrap {
-    display: flex; align-items: center; justify-content: center;
-    padding: 2rem 0;
-  }
-  .pf-outer {
-    position: relative;
-    width: 320px;
-    height: 380px;
-  }
-  .pf-grid-bg {
-    position: absolute;
-    inset: 0;
-    background-image:
-      linear-gradient(rgba(0,229,255,0.07) 1px, transparent 1px),
-      linear-gradient(90deg, rgba(0,229,255,0.07) 1px, transparent 1px);
-    background-size: 28px 28px;
-    border-radius: 4px;
-  }
-  .pf-corner {
-    position: absolute;
-    width: 22px; height: 22px;
-    z-index: 5;
-  }
-  .pf-corner svg { display: block; }
-  .pf-corner.tl { top: 0; left: 0; }
-  .pf-corner.tr { top: 0; right: 0; transform: scaleX(-1); }
-  .pf-corner.bl { bottom: 0; left: 0; transform: scaleY(-1); }
-  .pf-corner.br { bottom: 0; right: 0; transform: scale(-1); }
-  .pf-accent-bar {
-    position: absolute;
-    left: 0; bottom: -6px;
-    width: 60px; height: 2px;
-    background: #00e5ff;
-    z-index: 6;
-  }
-  .pf-accent-bar-v {
-    position: absolute;
-    right: -6px; top: 0;
-    width: 2px; height: 60px;
-    background: #00e5ff;
-    z-index: 6;
-  }
-  .pf-scan-line {
-    position: absolute;
-    left: 0; right: 0;
-    height: 1px;
-    background: linear-gradient(90deg, transparent 0%, rgba(0,229,255,0.5) 40%, rgba(0,229,255,0.5) 60%, transparent 100%);
-    z-index: 7;
-    animation: scan 4s ease-in-out infinite;
-    pointer-events: none;
-  }
-  @keyframes scan {
-    0%   { top: 5%;  opacity: 0; }
-    10%  { opacity: 1; }
-    90%  { opacity: 1; }
-    100% { top: 95%; opacity: 0; }
-  }
-  .pf-img-container {
-    position: absolute;
-    inset: 16px;
-    overflow: hidden;
-    border-radius: 2px;
-    display: flex; align-items: flex-end; justify-content: center;
-  }
-  .pf-img {
-    width: 100%;
-    height: 100%;
-    object-fit: cover;
-    object-position: top center;
-    filter: grayscale(1) contrast(1.1);
-    mix-blend-mode: luminosity;
-  }
-  .pf-img-tint {
-    position: absolute;
-    inset: 0;
-    background: linear-gradient(
-      to top,
-      rgba(8,12,20,0.7) 0%,
-      rgba(8,12,20,0.15) 40%,
-      transparent 70%
-    );
-    pointer-events: none;
-  }
-  .pf-label {
-    position: absolute;
-    bottom: 20px;
-    left: 24px;
-    z-index: 6;
-  }
-  .pf-label-name {
-    font-family: 'IBM Plex Mono', monospace;
-    font-size: 11px;
-    letter-spacing: 3px;
-    text-transform: uppercase;
-    color: rgba(0,229,255,0.85);
-    display: block;
-  }
-  .pf-label-role {
-    font-family: 'IBM Plex Mono', monospace;
-    font-size: 10px;
-    letter-spacing: 2px;
-    text-transform: uppercase;
-    color: rgba(255,255,255,0.3);
-    display: block;
-    margin-top: 2px;
-  }
-  .pf-badge {
-    position: absolute;
-    top: 20px;
-    right: 20px;
-    width: 46px; height: 46px;
-    border: 1px solid rgba(0,229,255,0.25);
-    border-radius: 50%;
-    display: flex; align-items: center; justify-content: center;
-    z-index: 6;
-    background: rgba(8,12,20,0.6);
-  }
-  .pf-badge-inner {
-    font-family: 'IBM Plex Mono', monospace;
-    font-size: 9px;
-    letter-spacing: 1px;
-    text-transform: uppercase;
-    color: rgba(0,229,255,0.7);
-    text-align: center;
-    line-height: 1.3;
-  }
-  .pf-dot-row {
-    position: absolute;
-    bottom: -18px;
-    right: 0;
-    display: flex; gap: 5px; z-index: 6;
-  }
-  .pf-dot {
-    width: 4px; height: 4px;
-    border-radius: 50%;
-    background: rgba(0,229,255,0.35);
-  }
-  .pf-dot.active { background: rgba(0,229,255,0.9); }
-</style>
-<div class="pf-wrap">
-  <div class="pf-outer">
-    <div class="pf-grid-bg"></div>
-    <div class="pf-scan-line"></div>
-    <div class="pf-corner tl">
-      <svg width="22" height="22" viewBox="0 0 22 22" fill="none">
-        <path d="M1 11 L1 1 L11 1" stroke="#00e5ff" stroke-width="1.5" fill="none"/>
-      </svg>
-    </div>
-    <div class="pf-corner tr">
-      <svg width="22" height="22" viewBox="0 0 22 22" fill="none">
-        <path d="M1 11 L1 1 L11 1" stroke="#00e5ff" stroke-width="1.5" fill="none"/>
-      </svg>
-    </div>
-    <div class="pf-corner bl">
-      <svg width="22" height="22" viewBox="0 0 22 22" fill="none">
-        <path d="M1 11 L1 1 L11 1" stroke="#00e5ff" stroke-width="1.5" fill="none"/>
-      </svg>
-    </div>
-    <div class="pf-corner br">
-      <svg width="22" height="22" viewBox="0 0 22 22" fill="none">
-        <path d="M1 11 L1 1 L11 1" stroke="#00e5ff" stroke-width="1.5" fill="none"/>
-      </svg>
-    </div>
-    <div class="pf-accent-bar"></div>
-    <div class="pf-accent-bar-v"></div>
-    <div class="pf-img-container">
-      <img class="pf-img" src="assets/images/profile.png" alt="Unarine Dzivhani" />
-      <div class="pf-img-tint"></div>
-    </div>
-    <div class="pf-badge">
-      <div class="pf-badge-inner">ZA<br/>DEV</div>
-    </div>
-    <div class="pf-label">
-      <span class="pf-label-name">Unarine</span>
-      <span class="pf-label-role">Full-Stack · ML</span>
-    </div>
-    <div class="pf-dot-row">
-      <div class="pf-dot active"></div>
-      <div class="pf-dot"></div>
-      <div class="pf-dot"></div>
-    </div>
-  </div>
-</div>
+    function resize() {
+      canvas.width  = window.innerWidth  || 320;
+      canvas.height = window.innerHeight || 380;
+      initNodes();
+    }
+
+    const ACCENT_R = 0, ACCENT_G = 229, ACCENT_B = 255;
+    const BG = 'rgba(8,12,20,0.96)';
+
+    let nodes = [];
+    let hexagons = [];
+
+    function initNodes() {
+      const W = canvas.width, H = canvas.height;
+      const count = Math.floor((W * H) / 4000);
+
+      nodes = Array.from({ length: Math.max(18, Math.min(count, 36)) }, () => ({
+        x: Math.random() * W,
+        y: Math.random() * H,
+        vx: (Math.random() - 0.5) * 0.32,
+        vy: (Math.random() - 0.5) * 0.32,
+        r: Math.random() * 1.4 + 0.7,
+        pulse: Math.random() * Math.PI * 2,
+        pulseSpeed: 0.018 + Math.random() * 0.018,
+      }));
+
+      hexagons = Array.from({ length: 5 }, () => ({
+        x: Math.random() * W,
+        y: Math.random() * H,
+        size: 16 + Math.random() * 28,
+        rot: Math.random() * Math.PI,
+        rotSpeed: (Math.random() - 0.5) * 0.0035,
+        alpha: 0.035 + Math.random() * 0.065,
+      }));
+    }
+
+    function hexPath(x, y, r, rot) {
+      ctx.beginPath();
+      for (let i = 0; i < 6; i++) {
+        const a = rot + (Math.PI / 3) * i;
+        const px = x + r * Math.cos(a);
+        const py = y + r * Math.sin(a);
+        i === 0 ? ctx.moveTo(px, py) : ctx.lineTo(px, py);
+      }
+      ctx.closePath();
+    }
+
+    let tick = 0;
+
+    function draw() {
+      const W = canvas.width, H = canvas.height;
+
+      /* Background */
+      ctx.fillStyle = BG;
+      ctx.fillRect(0, 0, W, H);
+
+      /* Dot grid */
+      ctx.strokeStyle = 'rgba(0,229,255,0.05)';
+      ctx.lineWidth = 0.5;
+      const step = 28;
+      for (let x = 0; x < W; x += step) {
+        ctx.beginPath(); ctx.moveTo(x, 0); ctx.lineTo(x, H); ctx.stroke();
+      }
+      for (let y = 0; y < H; y += step) {
+        ctx.beginPath(); ctx.moveTo(0, y); ctx.lineTo(W, y); ctx.stroke();
+      }
+
+      /* Rotating hexagons */
+      for (const h of hexagons) {
+        h.rot += h.rotSpeed;
+        hexPath(h.x, h.y, h.size, h.rot);
+        ctx.strokeStyle = `rgba(0,229,255,${h.alpha})`;
+        ctx.lineWidth = 0.5;
+        ctx.stroke();
+      }
+
+      /* Connection lines between nearby nodes */
+      const MAX_DIST = 95;
+      for (let i = 0; i < nodes.length; i++) {
+        const a = nodes[i];
+        for (let j = i + 1; j < nodes.length; j++) {
+          const b = nodes[j];
+          const dx = a.x - b.x, dy = a.y - b.y;
+          const dist = Math.sqrt(dx * dx + dy * dy);
+          if (dist < MAX_DIST) {
+            ctx.beginPath();
+            ctx.moveTo(a.x, a.y);
+            ctx.lineTo(b.x, b.y);
+            ctx.strokeStyle = `rgba(${ACCENT_R},${ACCENT_G},${ACCENT_B},${(1 - dist / MAX_DIST) * 0.22})`;
+            ctx.lineWidth = 0.5;
+            ctx.stroke();
+          }
+        }
+      }
+
+      /* Nodes */
+      for (const n of nodes) {
+        n.pulse += n.pulseSpeed;
+        const glow = 0.6 + Math.sin(n.pulse) * 0.4;
+
+        ctx.beginPath();
+        ctx.arc(n.x, n.y, n.r, 0, Math.PI * 2);
+        ctx.fillStyle = `rgba(${ACCENT_R},${ACCENT_G},${ACCENT_B},${glow * 0.85})`;
+        ctx.fill();
+
+        /* Ripple on bright pulse */
+        const s = Math.sin(n.pulse);
+        if (s > 0.72) {
+          ctx.beginPath();
+          ctx.arc(n.x, n.y, n.r * 3.5, 0, Math.PI * 2);
+          ctx.strokeStyle = `rgba(${ACCENT_R},${ACCENT_G},${ACCENT_B},${(s - 0.72) * 0.45})`;
+          ctx.lineWidth = 0.5;
+          ctx.stroke();
+        }
+
+        /* Move + bounce */
+        n.x += n.vx; n.y += n.vy;
+        if (n.x < 0 || n.x > W) n.vx *= -1;
+        if (n.y < 0 || n.y > H) n.vy *= -1;
+      }
+
+      /* Sweep beam */
+      const beamY = (tick * 0.55) % (H + 20) - 10;
+      const grad = ctx.createLinearGradient(0, beamY - 10, 0, beamY + 10);
+      grad.addColorStop(0, 'transparent');
+      grad.addColorStop(0.5, `rgba(${ACCENT_R},${ACCENT_G},${ACCENT_B},0.055)`);
+      grad.addColorStop(1, 'transparent');
+      ctx.fillStyle = grad;
+      ctx.fillRect(0, beamY - 10, W, 20);
+
+      tick++;
+      requestAnimationFrame(draw);
+    }
+
+    window.addEventListener('resize', resize);
+    resize();
+    draw();
+  </script>
+</body>
+</html>
