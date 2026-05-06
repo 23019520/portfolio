@@ -22,6 +22,131 @@
 
   <style>
     /* ══════════════════════════════════════════
+       PHOTO FRAME REDESIGN
+    ══════════════════════════════════════════ */
+    .photo-frame {
+      position: relative;
+      width: 320px;
+      height: 380px;
+      border-radius: 4px;
+      overflow: hidden;
+    }
+
+    /* HTML animation background via iframe */
+    .photo-bg-iframe {
+      position: absolute;
+      inset: 0;
+      width: 100%;
+      height: 100%;
+      border: none;
+      z-index: 0;
+      pointer-events: none;
+      border-radius: 4px;
+    }
+
+    /* Dot-grid overlay */
+    .photo-frame::before {
+      content: '';
+      position: absolute;
+      inset: 0;
+      background-image:
+        linear-gradient(rgba(0,229,255,0.07) 1px, transparent 1px),
+        linear-gradient(90deg, rgba(0,229,255,0.07) 1px, transparent 1px);
+      background-size: 28px 28px;
+      border-radius: 4px;
+      z-index: 1;
+      pointer-events: none;
+    }
+
+    /* Offset accent bar */
+    .photo-frame::after {
+      content: '';
+      position: absolute;
+      left: 0; bottom: -6px;
+      width: 60px; height: 2px;
+      background: var(--accent, #00e5ff);
+      z-index: 6;
+    }
+
+    /* Profile image — transparent PNG floats above iframe */
+    .photo-frame img {
+      position: absolute;
+      inset: 16px;
+      width: calc(100% - 32px);
+      height: calc(100% - 32px);
+      object-fit: cover;
+      object-position: top center;
+      z-index: 2;
+      border-radius: 2px;
+    }
+
+    /* Corner brackets */
+    .corner-bracket {
+      position: absolute;
+      width: 16px;
+      height: 16px;
+      z-index: 4;
+    }
+    .corner-bracket.tl { top: 8px;  left: 8px;  border-top: 1px solid var(--accent,#00e5ff); border-left: 1px solid var(--accent,#00e5ff); }
+    .corner-bracket.tr { top: 8px;  right: 8px; border-top: 1px solid var(--accent,#00e5ff); border-right: 1px solid var(--accent,#00e5ff); }
+    .corner-bracket.bl { bottom: 8px; left: 8px;  border-bottom: 1px solid var(--accent,#00e5ff); border-left: 1px solid var(--accent,#00e5ff); }
+    .corner-bracket.br { bottom: 8px; right: 8px; border-bottom: 1px solid var(--accent,#00e5ff); border-right: 1px solid var(--accent,#00e5ff); }
+
+    /* Bottom vignette */
+    .photo-vignette {
+      position: absolute;
+      bottom: 0; left: 0; right: 0;
+      height: 45%;
+      background: linear-gradient(to top, rgba(8,12,20,0.9) 0%, transparent 100%);
+      z-index: 3;
+      pointer-events: none;
+    }
+
+    /* Name label */
+    .photo-label {
+      position: absolute;
+      bottom: 16px;
+      left: 16px;
+      z-index: 5;
+      display: flex;
+      flex-direction: column;
+      gap: 2px;
+    }
+    .photo-label-name {
+      font-family: 'Space Grotesk', sans-serif;
+      font-size: 15px;
+      font-weight: 600;
+      color: #f0f0f0;
+      letter-spacing: 0.5px;
+    }
+    .photo-label-role {
+      font-family: 'IBM Plex Mono', monospace;
+      font-size: 10px;
+      letter-spacing: 2px;
+      text-transform: uppercase;
+      color: var(--accent, #00e5ff);
+      opacity: 0.75;
+    }
+
+    /* Scan line animation */
+    .photo-scan {
+      position: absolute;
+      top: 0; left: 0; right: 0;
+      height: 2px;
+      background: linear-gradient(90deg, transparent, var(--accent,#00e5ff), transparent);
+      opacity: 0.5;
+      z-index: 5;
+      animation: scanMove 3s ease-in-out infinite;
+      pointer-events: none;
+    }
+    @keyframes scanMove {
+      0%   { top: 0%;   opacity: 0; }
+      10%  { opacity: 0.5; }
+      90%  { opacity: 0.5; }
+      100% { top: 100%; opacity: 0; }
+    }
+
+    /* ══════════════════════════════════════════
        PROJECTS — BENTO GRID
     ══════════════════════════════════════════ */
     .projects-section { padding: 100px 0; }
@@ -57,7 +182,7 @@
       gap: 16px;
     }
 
-    /* ── Card base ── */
+    /* Card base */
     .project-card {
       position: relative;
       overflow: hidden;
@@ -97,7 +222,7 @@
     }
     .project-card:hover .project-accent-line { transform: scaleX(1); }
 
-    /* ── Preview area with vignette ── */
+    /* Preview area */
     .proj-preview-wrap {
       position: relative;
       height: 180px;
@@ -170,7 +295,7 @@
     }
     .project-card:hover .proj-cover-img { transform: scale(1.04); }
 
-    /* ── Placeholder preview (for cards with no image/url) ── */
+    /* Placeholder */
     .proj-placeholder {
       width: 100%;
       height: 100%;
@@ -186,7 +311,7 @@
       color: var(--accent, #00e5ff);
     }
 
-    /* ── Card body ── */
+    /* Card body */
     .proj-body {
       padding: 22px 24px 24px;
       display: flex;
@@ -262,7 +387,7 @@
       user-select: none;
     }
 
-    /* ── "More projects" banner card ── */
+    /* More projects banner card */
     .project-card.more-card {
       background: rgba(0,229,255,0.03);
       border: 1px dashed rgba(0,229,255,0.18);
@@ -284,11 +409,7 @@
       transform: translateY(-3px);
       box-shadow: 0 16px 48px rgba(0,0,0,0.4);
     }
-    .more-card-icon {
-      font-size: 28px;
-      color: var(--accent, #00e5ff);
-      opacity: 0.6;
-    }
+    .more-card-icon { font-size: 28px; color: var(--accent, #00e5ff); opacity: 0.6; }
     .more-card-label {
       font-family: 'IBM Plex Mono', monospace;
       font-size: 10px;
@@ -297,12 +418,7 @@
       color: var(--accent, #00e5ff);
       opacity: 0.6;
     }
-    .more-card-heading {
-      font-size: 18px;
-      font-weight: 600;
-      color: #f0f0f0;
-      line-height: 1.3;
-    }
+    .more-card-heading { font-size: 18px; font-weight: 600; color: #f0f0f0; line-height: 1.3; }
     .more-card-sub {
       font-size: 12px;
       color: rgba(255,255,255,0.3);
@@ -375,7 +491,7 @@
     }
     @keyframes spin {
       from { transform: rotate(0deg); }
-      to { transform: rotate(360deg); }
+      to   { transform: rotate(360deg); }
     }
     .recursion-label {
       font-family: 'IBM Plex Mono', monospace;
@@ -411,11 +527,7 @@
       margin-bottom: 28px;
       line-height: 1.6;
     }
-    .recursion-btns {
-      display: flex;
-      gap: 12px;
-      justify-content: center;
-    }
+    .recursion-btns { display: flex; gap: 12px; justify-content: center; }
     .recursion-btn-primary {
       font-family: 'IBM Plex Mono', monospace;
       font-size: 11px;
@@ -451,7 +563,7 @@
     }
 
     /* ══════════════════════════════════════════
-       CONTACT REDESIGN
+       CONTACT
     ══════════════════════════════════════════ */
     .contact-section { padding: 100px 0 60px; }
     .contact-split {
@@ -677,10 +789,40 @@ function visitPortfolio(url) {<br/>
           </div>
           <div class="about-photo gsap-about-photo">
             <div class="photo-frame">
+              <!-- HTML animation background -->
+              <iframe
+                class="photo-bg-iframe"
+                src="photo_frame_redesign.html"
+                scrolling="no"
+                frameborder="0"
+                tabindex="-1"
+                aria-hidden="true"
+              ></iframe>
+
+              <!-- Corner brackets -->
+              <div class="corner-bracket tl"></div>
+              <div class="corner-bracket tr"></div>
+              <div class="corner-bracket bl"></div>
+              <div class="corner-bracket br"></div>
+
+              <!-- Transparent B&W profile image -->
               <picture>
                 <source srcset="assets/images/profile.png" type="image/webp" />
                 <img src="assets/images/profile.png" alt="Unarine Dzivhani" loading="lazy" />
               </picture>
+
+              <!-- Bottom vignette -->
+              <div class="photo-vignette"></div>
+
+              <!-- Name label -->
+              <div class="photo-label">
+                <span class="photo-label-name">Unarine</span>
+                <span class="photo-label-role">Full-Stack · ML</span>
+              </div>
+
+              <!-- Scan line -->
+              <div class="photo-scan"></div>
+
               <div class="photo-decoration"></div>
             </div>
           </div>
@@ -702,12 +844,11 @@ function visitPortfolio(url) {<br/>
           <button class="filter-btn" data-filter="mobile">Mobile</button>
           <button class="filter-btn" data-filter="web">Web</button>
           <button class="filter-btn" data-filter="ml">ML / AI</button>
-
         </div>
 
         <div class="projects-bento" id="projectsGrid">
 
-          <!-- 01 PhaseOut — FEATURED (iframe preview) -->
+          <!-- 01 PhaseOut -->
           <div class="project-card featured" data-category="mobile">
             <div class="project-accent-line"></div>
             <div class="proj-preview-wrap">
@@ -736,7 +877,7 @@ function visitPortfolio(url) {<br/>
             <div class="project-number">01</div>
           </div>
 
-          <!-- 02 FoodBridge — TALL (iframe preview) -->
+          <!-- 02 FoodBridge -->
           <div class="project-card tall" data-category="web">
             <div class="project-accent-line"></div>
             <div class="proj-preview-wrap">
@@ -763,7 +904,7 @@ function visitPortfolio(url) {<br/>
             <div class="project-number">02</div>
           </div>
 
-          <!-- 03 Face Extraction — WIDE (image) -->
+          <!-- 03 Face Extraction -->
           <div class="project-card wide" data-category="ml">
             <div class="project-accent-line"></div>
             <div class="proj-preview-wrap">
@@ -787,7 +928,7 @@ function visitPortfolio(url) {<br/>
             <div class="project-number">03</div>
           </div>
 
-          <!-- 04 Portfolio — SMALL (iframe preview + easter egg) -->
+          <!-- 04 Portfolio — easter egg -->
           <div class="project-card small" data-category="web" id="portfolioCard" style="cursor:pointer;">
             <div class="project-accent-line"></div>
             <div class="proj-preview-wrap">
@@ -810,7 +951,7 @@ function visitPortfolio(url) {<br/>
             <div class="project-number">04</div>
           </div>
 
-          <!-- 05 December Projects — HALF (single card for all december projects) -->
+          <!-- 05 December Projects -->
           <div class="project-card half" data-category="ml">
             <div class="project-accent-line"></div>
             <div class="proj-body" style="padding-top: 32px;">
@@ -832,7 +973,7 @@ function visitPortfolio(url) {<br/>
             <div class="project-number">05</div>
           </div>
 
-          <!-- 06 View GitHub — HALF -->
+          <!-- 06 View GitHub -->
           <a href="https://github.com/23019520" target="_blank" rel="noopener"
              class="project-card more-card half" data-category="all">
             <div class="more-card-icon"><i class="fa-brands fa-github"></i></div>
@@ -1009,7 +1150,6 @@ function visitPortfolio(url) {<br/>
         btn.classList.add('active');
         const filter = btn.dataset.filter;
         document.querySelectorAll('.project-card').forEach(card => {
-          // "more-card" always visible, and "all" filter shows everything
           const isMoreCard = card.classList.contains('more-card');
           if (isMoreCard || filter === 'all') {
             card.classList.remove('hidden');
