@@ -22,6 +22,131 @@
 
   <style>
     /* ══════════════════════════════════════════
+       PHOTO FRAME REDESIGN
+    ══════════════════════════════════════════ */
+    .photo-frame {
+      position: relative;
+      width: 320px;
+      height: 380px;
+      border-radius: 4px;
+      overflow: hidden;
+    }
+
+    /* HTML animation background via iframe */
+    .photo-bg-iframe {
+      position: absolute;
+      inset: 0;
+      width: 100%;
+      height: 100%;
+      border: none;
+      z-index: 0;
+      pointer-events: none;
+      border-radius: 4px;
+    }
+
+    /* Dot-grid overlay */
+    .photo-frame::before {
+      content: '';
+      position: absolute;
+      inset: 0;
+      background-image:
+        linear-gradient(rgba(0,229,255,0.07) 1px, transparent 1px),
+        linear-gradient(90deg, rgba(0,229,255,0.07) 1px, transparent 1px);
+      background-size: 28px 28px;
+      border-radius: 4px;
+      z-index: 1;
+      pointer-events: none;
+    }
+
+    /* Offset accent bar */
+    .photo-frame::after {
+      content: '';
+      position: absolute;
+      left: 0; bottom: -6px;
+      width: 60px; height: 2px;
+      background: var(--accent, #00e5ff);
+      z-index: 6;
+    }
+
+    /* Profile image — transparent PNG floats above iframe */
+    .photo-frame img {
+      position: absolute;
+      inset: 16px;
+      width: calc(100% - 32px);
+      height: calc(100% - 32px);
+      object-fit: cover;
+      object-position: top center;
+      z-index: 2;
+      border-radius: 2px;
+    }
+
+    /* Corner brackets */
+    .corner-bracket {
+      position: absolute;
+      width: 16px;
+      height: 16px;
+      z-index: 4;
+    }
+    .corner-bracket.tl { top: 8px;  left: 8px;  border-top: 1px solid var(--accent,#00e5ff); border-left: 1px solid var(--accent,#00e5ff); }
+    .corner-bracket.tr { top: 8px;  right: 8px; border-top: 1px solid var(--accent,#00e5ff); border-right: 1px solid var(--accent,#00e5ff); }
+    .corner-bracket.bl { bottom: 8px; left: 8px;  border-bottom: 1px solid var(--accent,#00e5ff); border-left: 1px solid var(--accent,#00e5ff); }
+    .corner-bracket.br { bottom: 8px; right: 8px; border-bottom: 1px solid var(--accent,#00e5ff); border-right: 1px solid var(--accent,#00e5ff); }
+
+    /* Bottom vignette */
+    .photo-vignette {
+      position: absolute;
+      bottom: 0; left: 0; right: 0;
+      height: 45%;
+      background: linear-gradient(to top, rgba(8,12,20,0.9) 0%, transparent 100%);
+      z-index: 3;
+      pointer-events: none;
+    }
+
+    /* Name label */
+    .photo-label {
+      position: absolute;
+      bottom: 16px;
+      left: 16px;
+      z-index: 5;
+      display: flex;
+      flex-direction: column;
+      gap: 2px;
+    }
+    .photo-label-name {
+      font-family: 'Space Grotesk', sans-serif;
+      font-size: 15px;
+      font-weight: 600;
+      color: #f0f0f0;
+      letter-spacing: 0.5px;
+    }
+    .photo-label-role {
+      font-family: 'IBM Plex Mono', monospace;
+      font-size: 10px;
+      letter-spacing: 2px;
+      text-transform: uppercase;
+      color: var(--accent, #00e5ff);
+      opacity: 0.75;
+    }
+
+    /* Scan line animation */
+    .photo-scan {
+      position: absolute;
+      top: 0; left: 0; right: 0;
+      height: 2px;
+      background: linear-gradient(90deg, transparent, var(--accent,#00e5ff), transparent);
+      opacity: 0.5;
+      z-index: 5;
+      animation: scanMove 3s ease-in-out infinite;
+      pointer-events: none;
+    }
+    @keyframes scanMove {
+      0%   { top: 0%;   opacity: 0; }
+      10%  { opacity: 0.5; }
+      90%  { opacity: 0.5; }
+      100% { top: 100%; opacity: 0; }
+    }
+
+    /* ══════════════════════════════════════════
        PROJECTS — BENTO GRID
     ══════════════════════════════════════════ */
     .projects-section { padding: 100px 0; }
@@ -57,7 +182,7 @@
       gap: 16px;
     }
 
-    /* ── Card base ── */
+    /* Card base */
     .project-card {
       position: relative;
       overflow: hidden;
@@ -97,7 +222,7 @@
     }
     .project-card:hover .project-accent-line { transform: scaleX(1); }
 
-    /* ── Preview area with vignette ── */
+    /* Preview area */
     .proj-preview-wrap {
       position: relative;
       height: 180px;
@@ -170,7 +295,7 @@
     }
     .project-card:hover .proj-cover-img { transform: scale(1.04); }
 
-    /* ── Placeholder preview (for cards with no image/url) ── */
+    /* Placeholder */
     .proj-placeholder {
       width: 100%;
       height: 100%;
@@ -186,7 +311,7 @@
       color: var(--accent, #00e5ff);
     }
 
-    /* ── Card body ── */
+    /* Card body */
     .proj-body {
       padding: 22px 24px 24px;
       display: flex;
@@ -262,7 +387,7 @@
       user-select: none;
     }
 
-    /* ── "More projects" banner card ── */
+    /* More projects banner card */
     .project-card.more-card {
       background: rgba(0,229,255,0.03);
       border: 1px dashed rgba(0,229,255,0.18);
@@ -284,11 +409,7 @@
       transform: translateY(-3px);
       box-shadow: 0 16px 48px rgba(0,0,0,0.4);
     }
-    .more-card-icon {
-      font-size: 28px;
-      color: var(--accent, #00e5ff);
-      opacity: 0.6;
-    }
+    .more-card-icon { font-size: 28px; color: var(--accent, #00e5ff); opacity: 0.6; }
     .more-card-label {
       font-family: 'IBM Plex Mono', monospace;
       font-size: 10px;
@@ -297,12 +418,7 @@
       color: var(--accent, #00e5ff);
       opacity: 0.6;
     }
-    .more-card-heading {
-      font-size: 18px;
-      font-weight: 600;
-      color: #f0f0f0;
-      line-height: 1.3;
-    }
+    .more-card-heading { font-size: 18px; font-weight: 600; color: #f0f0f0; line-height: 1.3; }
     .more-card-sub {
       font-size: 12px;
       color: rgba(255,255,255,0.3);
@@ -375,7 +491,7 @@
     }
     @keyframes spin {
       from { transform: rotate(0deg); }
-      to { transform: rotate(360deg); }
+      to   { transform: rotate(360deg); }
     }
     .recursion-label {
       font-family: 'IBM Plex Mono', monospace;
@@ -411,11 +527,7 @@
       margin-bottom: 28px;
       line-height: 1.6;
     }
-    .recursion-btns {
-      display: flex;
-      gap: 12px;
-      justify-content: center;
-    }
+    .recursion-btns { display: flex; gap: 12px; justify-content: center; }
     .recursion-btn-primary {
       font-family: 'IBM Plex Mono', monospace;
       font-size: 11px;
@@ -451,7 +563,7 @@
     }
 
     /* ══════════════════════════════════════════
-       CONTACT REDESIGN
+       CONTACT
     ══════════════════════════════════════════ */
     .contact-section { padding: 100px 0 60px; }
     .contact-split {
@@ -646,7 +758,7 @@ function visitPortfolio(url) {<br/>
         <p class="hero-subtitle gsap-hero-subtitle">I'm a <span id="typedText"></span></p>
         <div class="hero-ctas gsap-hero-ctas">
           <a href="#projects" class="btn btn-primary">View My Work</a>
-          <a href="assets/cv/Unarine_Dzivhani_CV.pdf" class="btn btn-outline" target="_blank" rel="noopener">
+          <a href="Unarine_Dzivhani_CV.pdf" class="btn btn-outline" target="_blank" rel="noopener">
             <i class="fa-solid fa-download"></i> Download CV
           </a>
         </div>
@@ -677,10 +789,40 @@ function visitPortfolio(url) {<br/>
           </div>
           <div class="about-photo gsap-about-photo">
             <div class="photo-frame">
+              <!-- HTML animation background -->
+              <iframe
+                class="photo-bg-iframe"
+                src="photo_frame_redesign.html"
+                scrolling="no"
+                frameborder="0"
+                tabindex="-1"
+                aria-hidden="true"
+              ></iframe>
+
+              <!-- Corner brackets -->
+              <div class="corner-bracket tl"></div>
+              <div class="corner-bracket tr"></div>
+              <div class="corner-bracket bl"></div>
+              <div class="corner-bracket br"></div>
+
+              <!-- Transparent B&W profile image -->
               <picture>
-                <source srcset="assets/images/profile.webp" type="image/webp" />
-                <img src="assets/images/profile.jpeg" alt="Unarine Dzivhani" loading="lazy" />
+                <source srcset="assets/images/profile.png" type="image/webp" />
+                <img src="assets/images/profile.png" alt="Unarine Dzivhani" loading="lazy" />
               </picture>
+
+              <!-- Bottom vignette -->
+              <div class="photo-vignette"></div>
+
+              <!-- Name label -->
+              <div class="photo-label">
+                <span class="photo-label-name">Unarine</span>
+                <span class="photo-label-role">Full-Stack · ML</span>
+              </div>
+
+              <!-- Scan line -->
+              <div class="photo-scan"></div>
+
               <div class="photo-decoration"></div>
             </div>
           </div>
@@ -702,41 +844,41 @@ function visitPortfolio(url) {<br/>
           <button class="filter-btn" data-filter="mobile">Mobile</button>
           <button class="filter-btn" data-filter="web">Web</button>
           <button class="filter-btn" data-filter="ml">ML / AI</button>
-
         </div>
 
         <div class="projects-bento" id="projectsGrid">
 
-          <!-- 01 PhaseOut — FEATURED (iframe preview) -->
+          <!-- 01 PhaseOut -->
           <div class="project-card featured" data-category="mobile">
             <div class="project-accent-line"></div>
             <div class="proj-preview-wrap">
               <iframe class="proj-iframe" src="https://23019520.github.io/phaseout-privacy/" loading="lazy" sandbox="allow-scripts allow-same-origin"></iframe>
               <div class="proj-preview-vignette"></div>
               <div class="proj-iframe-overlay">
-                <a href="https://23019520.github.io/phaseout-privacy/" target="_blank" rel="noopener" class="proj-visit-btn">Visit Site</a>
+                <a href="https://phaseout.unarine.com/" target="_blank" rel="noopener" class="proj-visit-btn">Visit Site</a>
               </div>
             </div>
             <div class="proj-body">
               <div class="project-tag">Featured · Mobile · Android</div>
               <div class="project-name">PhaseOut</div>
-              <div class="project-desc">Fully autonomous Android sleep-automation app. Kotlin foreground service, on-device ML battery prediction, shipped to real users across two beta iterations.</div>
+              <div class="project-desc">Phone behaviour automation system that schedules device actions (Do Not Disturb, media stop, brightness, home-screen navigation) on recurring or one-off triggers — solving the problem of falling asleep on your phone and waking up with a dead battery and lost show progress. Grew to include an ML battery-drain model with a reinforcement-learning correction factor, a Gemini-powered AI generating daily wellness reports and contextual chat, per-app screen time tracking with enforced limits, a confirmation-gated bedtime routine driven by a background screen-off receiver, and a real-time focus mode that blocks apps via a foreground-app polling loop.</div>
               <div class="project-stack">
                 <span class="stack-pill">Flutter</span>
                 <span class="stack-pill">Kotlin</span>
                 <span class="stack-pill">SQLite</span>
-                <span class="stack-pill">Firebase</span>
-                <span class="stack-pill">On-device ML</span>
+                <span class="stack-pill">Gemini API</span>
+                <span class="stack-pill">Reinforcement Learning</span>
+                <span class="stack-pill">Android Services</span>
               </div>
               <div class="project-links">
-                <a href="https://23019520.github.io/phaseout-privacy/" target="_blank" rel="noopener" class="project-link"><i class="fa-solid fa-arrow-up-right-from-square"></i> Visit</a>
+                <a href="https://phaseout.unarine.com/" target="_blank" rel="noopener" class="project-link"><i class="fa-solid fa-arrow-up-right-from-square"></i> Visit</a>
                 <a href="https://github.com/23019520/PhaseOut" target="_blank" rel="noopener" class="project-link"><i class="fa-brands fa-github"></i> GitHub</a>
               </div>
             </div>
             <div class="project-number">01</div>
           </div>
 
-          <!-- 02 FoodBridge — TALL (iframe preview) -->
+          <!-- 02 FoodBridge -->
           <div class="project-card tall" data-category="web">
             <div class="project-accent-line"></div>
             <div class="proj-preview-wrap">
@@ -763,31 +905,86 @@ function visitPortfolio(url) {<br/>
             <div class="project-number">02</div>
           </div>
 
-          <!-- 03 Face Extraction — WIDE (image) -->
-          <div class="project-card wide" data-category="ml">
+          <!-- 03 SimpleVTube -->
+          <div class="project-card half" data-category="web">
             <div class="project-accent-line"></div>
             <div class="proj-preview-wrap">
-              <img src="assets/images/1.jpg" alt="Face Extraction Model" class="proj-cover-img" loading="lazy" />
+              <iframe class="proj-iframe" src="https://vtube.unarine.com/" loading="lazy" sandbox="allow-scripts allow-same-origin"></iframe>
               <div class="proj-preview-vignette"></div>
+              <div class="proj-iframe-overlay">
+                <a href="https://vtube.unarine.com/" target="_blank" rel="noopener" class="proj-visit-btn">Visit Site</a>
+              </div>
             </div>
             <div class="proj-body">
-              <div class="project-tag">ML / AI · Computer Vision</div>
-              <div class="project-name">Face Extraction Model</div>
-              <div class="project-desc">Computer vision model to detect and extract faces from full-body images. Custom TensorFlow pipeline with image preprocessing, normalisation, and augmentation for generalisation.</div>
+              <div class="project-tag">Open Source · Desktop App</div>
+              <div class="project-name">SimpleVTube</div>
+              <div class="project-desc">Lightweight, cross-platform PNGTuber desktop app that animates a 2D character in real time from live microphone input, letting streamers go live without a webcam or rig. Voice-activity detection with auto-calibration and noise gating drives multi-frame idle/talking animation, alongside global hotkeys, click-through, and always-on-top behaviour for use with OBS and TikTok Live Studio.</div>
               <div class="project-stack">
-                <span class="stack-pill">Python</span>
-                <span class="stack-pill">TensorFlow</span>
-                <span class="stack-pill">OpenCV</span>
-                <span class="stack-pill">Google Colab</span>
+                <span class="stack-pill">Tauri (Rust)</span>
+                <span class="stack-pill">TypeScript</span>
+                <span class="stack-pill">Web Audio API</span>
               </div>
               <div class="project-links">
-                <a href="https://github.com/23019520/face-extraction-model" target="_blank" rel="noopener" class="project-link"><i class="fa-brands fa-github"></i> GitHub</a>
+                <a href="https://vtube.unarine.com/" target="_blank" rel="noopener" class="project-link"><i class="fa-solid fa-arrow-up-right-from-square"></i> Visit</a>
               </div>
             </div>
             <div class="project-number">03</div>
           </div>
 
-          <!-- 04 Portfolio — SMALL (iframe preview + easter egg) -->
+          <!-- 04 Retail Commerce Platform -->
+          <div class="project-card half" data-category="mobile">
+            <div class="project-accent-line"></div>
+            <div class="proj-preview-wrap">
+              <iframe class="proj-iframe" src="https://shop.unarine.com/" loading="lazy" sandbox="allow-scripts allow-same-origin"></iframe>
+              <div class="proj-preview-vignette"></div>
+              <div class="proj-iframe-overlay">
+                <a href="https://shop.unarine.com/" target="_blank" rel="noopener" class="proj-visit-btn">Visit Site</a>
+              </div>
+            </div>
+            <div class="proj-body">
+              <div class="project-tag">Mobile & Web · White-Label</div>
+              <div class="project-name">Retail Commerce Platform</div>
+              <div class="project-desc">Full-stack mobile and web commerce app with a customer-facing shopping experience (catalog, cart, Yoco payments, order tracking, push notifications) and a separate admin dashboard for inventory, fulfillment, and business settings. Riverpod state management, Firestore realtime data, Firebase Auth with custom role claims, and Firebase Storage — architected as a white-label solution deployable for multiple businesses from a single codebase.</div>
+              <div class="project-stack">
+                <span class="stack-pill">Flutter</span>
+                <span class="stack-pill">Firebase</span>
+                <span class="stack-pill">Riverpod</span>
+                <span class="stack-pill">Firestore</span>
+                <span class="stack-pill">Yoco</span>
+              </div>
+              <div class="project-links">
+                <a href="https://shop.unarine.com/" target="_blank" rel="noopener" class="project-link"><i class="fa-solid fa-arrow-up-right-from-square"></i> Visit</a>
+              </div>
+            </div>
+            <div class="project-number">04</div>
+          </div>
+
+          <!-- 05 Face Recognition Preprocessing Pipeline -->
+          <div class="project-card wide" data-category="ml">
+            <div class="project-accent-line"></div>
+            <div class="proj-preview-wrap">
+              <img src="assets/images/1.jpg" alt="Face Recognition Preprocessing Pipeline" class="proj-cover-img" loading="lazy" />
+              <div class="proj-preview-vignette"></div>
+            </div>
+            <div class="proj-body">
+              <div class="project-tag">ML / AI · Computer Vision</div>
+              <div class="project-name">Face Recognition Preprocessing Pipeline</div>
+              <div class="project-desc">Automated preprocessing pipeline that detects, crops, and normalizes faces from a raw image dataset for downstream FaceNet-style model training. A custom FACELOADING class handles MTCNN face detection, extraction, resizing to 160×160, and BGR→RGB conversion, with graceful error handling for undetectable faces — converting a folder-labeled dataset into structured NumPy arrays ready for training, with grid-based visualization for detection quality checks.</div>
+              <div class="project-stack">
+                <span class="stack-pill">Python</span>
+                <span class="stack-pill">TensorFlow</span>
+                <span class="stack-pill">OpenCV</span>
+                <span class="stack-pill">MTCNN</span>
+                <span class="stack-pill">NumPy</span>
+              </div>
+              <div class="project-links">
+                <a href="https://github.com/23019520/face-extraction-model" target="_blank" rel="noopener" class="project-link"><i class="fa-brands fa-github"></i> GitHub</a>
+              </div>
+            </div>
+            <div class="project-number">05</div>
+          </div>
+
+          <!-- 06 Portfolio — easter egg -->
           <div class="project-card small" data-category="web" id="portfolioCard" style="cursor:pointer;">
             <div class="project-accent-line"></div>
             <div class="proj-preview-wrap">
@@ -807,10 +1004,10 @@ function visitPortfolio(url) {<br/>
                 <span class="stack-pill">Vanilla JS</span>
               </div>
             </div>
-            <div class="project-number">04</div>
+            <div class="project-number">06</div>
           </div>
 
-          <!-- 05 December Projects — HALF (single card for all december projects) -->
+          <!-- 07 December Projects -->
           <div class="project-card half" data-category="ml">
             <div class="project-accent-line"></div>
             <div class="proj-body" style="padding-top: 32px;">
@@ -829,10 +1026,10 @@ function visitPortfolio(url) {<br/>
                 <a href="https://github.com/23019520/December-projects" target="_blank" rel="noopener" class="project-link"><i class="fa-brands fa-github"></i> GitHub</a>
               </div>
             </div>
-            <div class="project-number">05</div>
+            <div class="project-number">07</div>
           </div>
 
-          <!-- 06 View GitHub — HALF -->
+          <!-- 08 View GitHub -->
           <a href="https://github.com/23019520" target="_blank" rel="noopener"
              class="project-card more-card half" data-category="all">
             <div class="more-card-icon"><i class="fa-brands fa-github"></i></div>
@@ -1009,7 +1206,6 @@ function visitPortfolio(url) {<br/>
         btn.classList.add('active');
         const filter = btn.dataset.filter;
         document.querySelectorAll('.project-card').forEach(card => {
-          // "more-card" always visible, and "all" filter shows everything
           const isMoreCard = card.classList.contains('more-card');
           if (isMoreCard || filter === 'all') {
             card.classList.remove('hidden');
